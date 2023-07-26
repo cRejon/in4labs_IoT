@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="Layer_3"
+   data-name="Layer 3"
+   viewBox="0 0 100 100"
+   version="1.1"
+   sodipodi:docname="IoT_icon.svg"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
+  <metadata
+     id="metadata38">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>sensors_icon</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#a1a1a1"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     id="namedview36"
+     showgrid="false"
+     inkscape:zoom="4.15"
+     inkscape:cx="60.380656"
+     inkscape:cy="51.818705"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Layer_3"
+     inkscape:document-rotation="0" />
+  <defs
+     id="defs4">
+    <style
+       id="style2">.cls-1{fill:#fff;}.cls-2,.cls-3{fill:none;}.cls-2{stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipEmfPath1">
+      <path
+         d="M 59.535118,67.653543 L 99.450709,67.653543 L 99.450709,81.860787 L 59.535118,81.860787 z"
+         id="path112" />
+    </clipPath>
+    <pattern
+       id="EMFhbasepattern"
+       patternUnits="userSpaceOnUse"
+       width="6"
+       height="6"
+       x="0"
+       y="0" />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipEmfPath1-2">
+      <path
+         d="M 59.535118,67.653543 H 99.450709 V 81.860787 H 59.535118 Z"
+         id="path112-4" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipEmfPath1-20">
+      <path
+         d="M 59.535118,67.653543 H 99.450709 V 81.860787 H 59.535118 Z"
+         id="path112-7" />
+    </clipPath>
+    <pattern
+       id="EMFhbasepattern-0"
+       patternUnits="userSpaceOnUse"
+       width="6"
+       height="6"
+       x="0"
+       y="0" />
+  </defs>
+  <title
+     id="title6">sensors_icon</title>
+  <style
+     id="style81">
+.MsftOfcThm_Background1_Stroke {
+ stroke:#FFFFFF; 
+}
+</style>
+  <g
+     id="g85"
+     transform="matrix(1.1284477,0,0,1.1872511,-4.0657923,-8.3740047)">
+    <path
+       d="m 78.2,47.9 c -0.3,0 -0.7,0 -1,0 0,0 0,0 0,0 0,-4.9 -2.4,-9.4 -6.3,-12.2 -4,-2.8 -9.1,-3.5 -13.7,-1.9 C 53.4,26.4 45,22.6 37,24.5 c -8,1.9 -13.8,9.1 -13.8,17.4 0,0 0,0.1 0,0.2 -5.5,-0.9 -11,1.4 -14.4,5.8 -3.3,4.5 -3.9,10.4 -1.6,15.4 2.4,5 7.4,8.3 12.9,8.6 V 72 h 58 c 6.6,0 12,-5.4 12,-12 0,-6.6 -5.3,-12.1 -11.9,-12.1 z"
+       stroke="#ffffff"
+       stroke-width="1.69163"
+       fill="none"
+       id="path83" />
+  </g>
+  <path
+     style="fill:none;stroke:#ffffff;stroke-width:3.38268px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+     clip-path="url(#clipEmfPath1)"
+     d="m 60.972756,79.154646 c 9.852047,-9.894331 26.384882,-9.386929 36.913464,1.141653"
+     id="path118"
+     transform="matrix(0.34312964,0,0,0.3332391,14.929571,25.567052)" />
+  <path
+     style="fill:none;stroke:#ffffff;stroke-width:3.38268px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+     clip-path="url(#clipEmfPath1-2)"
+     d="m 60.972756,79.154646 c 9.852047,-9.894331 26.384882,-9.386929 36.913464,1.141653"
+     id="path118-5"
+     transform="matrix(0.46181844,0,0,0.42836758,5.4571425,15.84648)" />
+  <path
+     style="fill:none;stroke:#ffffff;stroke-width:3.38268px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+     clip-path="url(#clipEmfPath1-20)"
+     d="m 60.972756,79.154646 c 9.852047,-9.894331 26.384882,-9.386929 36.913464,1.141653"
+     id="path118-2"
+     transform="matrix(0.58668072,0,0,0.52888246,-4.3516516,6.0109114)" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:400;font-size:34.3122px;line-height:125%;font-family:Tahoma;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.563651"
+     x="15.76722"
+     y="70.656784"
+     id="text32"
+     transform="scale(0.97405175,1.0266395)"><tspan
+       sodipodi:role="line"
+       x="15.76722"
+       y="70.656784"
+       id="tspan30"
+       style="stroke-width:0.563651"><tspan
+         dx="0"
+         dy="0"
+         style="font-style:normal;font-variant:normal;font-weight:400;font-size:34.3122px;font-family:Tahoma;fill:#ffffff;stroke-width:0.563651"
+         id="tspan28">I</tspan></tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:400;font-size:34.3122px;line-height:125%;font-family:Tahoma;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.563651"
+     x="33.836349"
+     y="70.656784"
+     id="text38"
+     transform="scale(0.97405175,1.0266395)"><tspan
+       sodipodi:role="line"
+       x="33.836349"
+       y="70.656784"
+       id="tspan36"
+       style="stroke-width:0.563651"><tspan
+         dx="0"
+         dy="0"
+         style="font-style:normal;font-variant:normal;font-weight:400;font-size:34.3122px;font-family:Tahoma;fill:#ffffff;stroke-width:0.563651"
+         id="tspan34">o</tspan></tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:400;font-size:34.3122px;line-height:125%;font-family:Tahoma;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.563651"
+     x="57.244095"
+     y="70.656784"
+     id="text44"
+     transform="scale(0.97405175,1.0266395)"><tspan
+       sodipodi:role="line"
+       x="57.244095"
+       y="70.656784"
+       id="tspan42"
+       style="stroke-width:0.563651"><tspan
+         dx="0"
+         dy="0"
+         style="font-style:normal;font-variant:normal;font-weight:400;font-size:34.3122px;font-family:Tahoma;fill:#ffffff;stroke-width:0.563651"
+         id="tspan40">T</tspan></tspan></text>
+</svg>
