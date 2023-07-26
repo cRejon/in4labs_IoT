@@ -37,7 +37,7 @@ boards = {
     'Board_3':{
         'name':'Fan',
         'model':'Arduino Uno Rev3',
-        'fqbn':'arduino:avr:uno',
+        'fqbn':'arduino:megaavr:uno2018',
         'serial_number':'00C8C2FEFC37ABCD660A',
     }
 }
