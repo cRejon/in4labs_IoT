@@ -7,6 +7,8 @@ WORKDIR /usr/local
 RUN curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | ARDUINO_UPDATER_ENABLE_NOTIFICATION=false sh
 RUN arduino-cli core update-index
 RUN arduino-cli core install arduino:megaavr
+RUN arduino-cli lib install "WiFiNINA"
+RUN arduino-cli lib install "ArduinoBLE"
 RUN arduino-cli lib install "DHT sensor library"
 
 # Python dependencies are installed here to ensure they will be cached.
