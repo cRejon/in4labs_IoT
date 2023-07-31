@@ -146,9 +146,9 @@ def execute():
 
     # NOTE: arduino-cli upload command does not work properly with -Pusb flag
     #       so we use avrdude directly instead
-    avrdude_path = os.path.join('/', 'home', 'pi', '.arduino15', 'packages', 'arduino',
+    avrdude_path = os.path.join('/', 'root', '.arduino15', 'packages', 'arduino',
                                  'tools', 'avrdude', '6.3.0-arduino17', 'bin', 'avrdude')
-    avrdude_conf_path = os.path.join('/', 'home', 'pi', '.arduino15', 'packages', 'arduino', 
+    avrdude_conf_path = os.path.join('/', 'root', '.arduino15', 'packages', 'arduino', 
                                      'tools', 'avrdude', '6.3.0-arduino17', 'etc', 'avrdude.conf')
     avrdude_partno = 'atmega4809'
     avrdude_programer_id = 'xplainedmini_updi'
@@ -158,7 +158,7 @@ def execute():
     avrdude_fuse_2 = '-Ufuse2:w:0x01:m'
     avrdude_fuse_5 = '-Ufuse5:w:0xC9:m'
     avrdude_fuse_8 = '-Ufuse8:w:0x02:m'
-    avrdude_boot = os.path.join('/', 'home', 'pi', '.arduino15', 'packages', 'arduino',
+    avrdude_boot = os.path.join('/', 'root', '.arduino15', 'packages', 'arduino',
                                  'hardware', 'megaavr', '1.8.8', 'bootloaders', 'atmega4809_uart_bl.hex:i')
 
     command = [avrdude_path, '-C', avrdude_conf_path, '-V', '-p', avrdude_partno, '-c', avrdude_programer_id, 
