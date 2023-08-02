@@ -22,8 +22,8 @@ function countdownTimer(end_time) {
         let remainingTime = end_time - currentDate;
 
         // Alert the user when the remaining time is close to be expired
-        if (remainingTime <= 30) {
-            $(".timer").addClass("red"); // NOT WORKING
+        if (remainingTime <= 30 * 1000) {
+            $(".timer").addClass("red"); 
         }
 
         // Check if the countdown is finished
