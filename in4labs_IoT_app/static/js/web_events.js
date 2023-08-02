@@ -21,16 +21,25 @@ function countdownTimer(end_time) {
         // Calculate the remaining time in milliseconds
         let remainingTime = end_time - currentDate;
 
-        // Check if the countdown is finished
-        if (remainingTime <= 0) {
-        clearInterval(countdown);
-        $("#overlay").css('display', 'block');
-        return;
-        }
-
         // Alert the user when the remaining time is close to be expired
         if (remainingTime <= 30) {
-            $(".timer").addClass("red");
+            $(".timer").addClass("red"); // NOT WORKING
+        }
+
+        // Check if the countdown is finished
+        if (remainingTime <= 0) {
+            clearInterval(countdown);   
+            // Disable actions
+            $('select.editor-select').prop('disabled',true);
+            $('button.upload').prop('disabled',true);
+            $('button.compile').prop('disabled',true);
+            $('button.execute').prop('disabled',true);
+            $('button.stop').prop('disabled',true);
+            // Notify the user
+            $('#modal_message').modal('show');
+            $('#modal-msg').text(messages.SESSION_EXPIRED);
+            $('#camera').prepend('<div class="session_blocked"><p>' + messages.SESSION_EXPIRED + '</p></div>');
+        return;
         }
 
         // Convert the remaining time to minutes and seconds
