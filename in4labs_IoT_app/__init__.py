@@ -166,6 +166,6 @@ def execute():
                avrdude_fuse_5, avrdude_fuse_8, avrdude_boot]
 
     result = subprocess.run(command, capture_output=True, text=True) 
-    
-    resp = jsonify(board=board, error=result.stderr)
+    print(result) # debug info
+    resp = jsonify(board=board)
     return resp

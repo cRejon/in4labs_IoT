@@ -101,6 +101,7 @@ function onSaveFile(board) {
 function onCompileCode(board) {
 
     // Get the text from the editor and encode it. End of Lines are represented as "//NL"
+    //let text = getEditor().getValue("//NL"); // TODO: check if this is needed
     let text = getEditor(board).getValue();
 
     // Send the text through an Ajax Post
@@ -187,7 +188,7 @@ function compilationFeedback(response) {
 /**
  * Function that is executed once a program execution process has been performed in the back-end.
  *
- * @param errorMsg, contains a message in case there are errors, otherwise it is null.
+ * @param response, contains the board used.
  */
 function executionFeedback(response) {
 
@@ -196,19 +197,9 @@ function executionFeedback(response) {
     loader.hide();
 
     let board = response.board
-    let error = response.error
-    // If there are errors
-    if (error) {
-        $('#modal_message').modal('show');
-        $('#modal-msg').text(messages.EXECUTION_ERROR).after('<pre>' + error + '</pre>');
-
-        $('#modal_message').on('hidden.bs.modal', function() {
-            $('#modal_message pre').remove();
-        })
-    } else {
-        // Enable the stop execution button after a successful execution
-        $('#button-stop-'+board).prop('disabled', false);
-    }
+    
+    // Enable the stop execution button after a successful execution
+    $('#button-stop-'+board).prop('disabled', false);
 }
 
 
