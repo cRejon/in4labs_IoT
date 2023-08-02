@@ -3,9 +3,9 @@ import os
 from flask import current_app
 
 
-def create_navtab(board):
+def create_navtab(board, name):
     navtab_html = f'''
-        <button class="nav-link col-sm-4" id="nav-{board}-tab" data-bs-toggle="tab" data-bs-target="#nav-{board}" type="button" role="tab" aria-controls="nav-{board}" aria-selected="true">{board}</button>
+        <button class="nav-link col-sm-4" id="nav-{board}-tab" data-bs-toggle="tab" data-bs-target="#nav-{board}" type="button" role="tab" aria-controls="nav-{board}" aria-selected="true">{name}</button>
     '''
 
     return navtab_html

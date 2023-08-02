@@ -90,7 +90,7 @@ def index():
     navtabs = []
     editors = []
     for board in boards.keys():
-        navtabs.append(create_navtab(board))
+        navtabs.append(create_navtab(board=board, name=boards[board]['name']))
         editors.append(create_editor(board))
     return render_template('index.html', boards=boards, navtabs=navtabs,
                                 editors=editors, cam_url=cam_url, end_time=end_time)
