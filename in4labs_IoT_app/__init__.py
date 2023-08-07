@@ -1,12 +1,11 @@
 import os
 from datetime import datetime, timedelta
-from pathlib import Path
 import subprocess
 
 from flask import Flask, render_template, url_for, jsonify, redirect, flash, send_file, request
 from flask_login import LoginManager, UserMixin, login_required, current_user, login_user
 
-from .utils import create_editor, create_navtab
+from .utils import convert_usb_ports, create_editor, create_navtab
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -26,22 +25,23 @@ boards = {
         'name':'Sensor',
         'model':'Arduino Uno WiFi Rev2',
         'fqbn':'arduino:megaavr:uno2018',
-        'serial_number':'02B4ABB7895EBAB2E4A9',
+        'usb_port':'1-1.1',
     },
     'Board_2':{
         'name':'TFT',
         'model':'Arduino Uno WiFi Rev2',
         'fqbn':'arduino:megaavr:uno2018',
-        'serial_number':'49DE5D448BF406B42B1B',
+        'usb_port':'1-1.2',
     },
     'Board_3':{
         'name':'Fan',
-        'model':'Arduino Uno Rev3',
+        'model':'Arduino Uno WiFi Rev2',
         'fqbn':'arduino:megaavr:uno2018',
-        'serial_number':'00C8C2FEFC37ABCD660A',
+        'usb_port':'1-1.3',
     }
 }
 
+boards = convert_usb_ports(boards)
 
 
 login_manager = LoginManager()
@@ -141,8 +141,7 @@ def execute():
     else: # target == 'stop'
         input_file = os.path.join(app.instance_path, 'compilations', 'precompiled','stop.hex')
 
-    # Take the last two characters of the serial number as the USB port
-    usb_port = boards[board]['serial_number'][-2:] 
+    usb_port = boards[board]['usb_port']
 
     # NOTE: arduino-cli upload command does not work properly with -Pusb flag
     #       so we use avrdude directly instead

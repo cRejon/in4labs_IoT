@@ -1,6 +1,24 @@
 import os
+import subprocess
+import re
 
 from flask import current_app
+
+
+def convert_usb_ports(boards):
+    result = subprocess.run(['dmesg'], capture_output=True, text=True)
+    dmesg_output = result.stdout
+
+    pattern = r'(1-1.\d).*?(tty\w\w\w\d)'
+    matches = re.findall(pattern, dmesg_output)
+
+    for match in matches:
+        for board in boards.values():
+            if board['usb_port'] == match[0]:
+                board['usb_port'] = match[1]
+                break
+
+    return boards
 
 
 def create_navtab(board, name):
@@ -19,6 +37,7 @@ def fill_examples(board):
     examples_html = ''
     for example, example_name in zip(examples, examples_name):
         examples_html += f'<option value="{example}">{example_name}</option>\n'
+    
     return examples_html
 
 def create_editor(board):
