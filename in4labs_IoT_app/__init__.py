@@ -2,24 +2,24 @@ import os
 from datetime import datetime, timedelta
 import subprocess
 
-from flask import Flask, render_template, url_for, jsonify, redirect, flash, send_file, request
+from flask import Flask, render_template, url_for, jsonify, redirect, send_file, request
 from flask_login import LoginManager, UserMixin, login_required, current_user, login_user
 
 from .utils import get_usb_config, create_editor, create_navtab
 
 
-basedir = os.path.abspath(os.path.dirname(__file__))
-
+# Flask environment variable needed for session management
 flask_config = {
     'SECRET_KEY': os.environ.get('SECRET_KEY') or 'super-secret-key',
 }
 
-# docker environment variables (for production delete lab_duration and OR statements)
+# Docker environment variables (for production delete lab_duration and OR statements)
 lab_duration = 1
 cam_url = os.environ.get('CAM_URL') or 'http://62.204.201.51:8100/Mjpeg/1?authToken=2454ef16-84cf-4184-a748-8bddd993c078'
 user_email = os.environ.get('USER_EMAIL') or 'admin@email.com'
 end_time = os.environ.get('END_TIME') or (datetime.now() + timedelta(minutes=lab_duration)).strftime('%Y-%m-%dT%H:%M:%S')
 
+# Boards configuration
 boards = {
     'Board_1':{
         'name':'Sensor',
@@ -41,22 +41,19 @@ boards = {
     }
 }
 
-boards = get_usb_config(boards)
+boards = get_usb_config(boards) # Get the serial number and driver of the boards
 
-
-login_manager = LoginManager()
-# set the default login page
-login_manager.login_view = 'login'
-
-app = Flask(__name__, instance_path=os.path.join(basedir, os.pardir, 'arduino'))
-
+app = Flask(__name__, instance_path=os.path.join(os.getcwd(), os.pardir, 'arduino'))
 app.config.from_mapping(flask_config)
 
-
-# init login
+# Flask-Login configuration
+login_manager = LoginManager()
+login_manager.login_view = 'login' # Set the default login page
 login_manager.init_app(app)
 
-
+@login_manager.user_loader
+def load_user(id):
+    return user
 
 class User(UserMixin):
     def __init__(self, id, email):
@@ -65,12 +62,8 @@ class User(UserMixin):
 
 user = User(id=1, email=user_email)
 
-@login_manager.user_loader
-def load_user(id):
-    return user
 
-
-
+# Flask routes
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -82,7 +75,6 @@ def login():
             login_user(user)
             return redirect(url_for('index'))
     return render_template('login.html')
-
 
 @app.route('/')
 @login_required
@@ -142,12 +134,10 @@ def execute():
         #input_file = os.path.join(app.instance_path, 'compilations', 'precompiled','stop.hex')
         input_file = os.path.join(app.instance_path, 'compilations', 'precompiled','stop.ino.bin')
 
-    # Take the last two digits of the serial number
+    # NOTE: Arduino-cli uses AVRdude to upload the code and it does not work properly if -Pusb flag is used with 
+    #       the usb interface of the board, so we use the last two digits of the serial number instead.
     serial_number = boards[board]['serial_number'][-2:]
 
-    # NOTE: arduino-cli upload command does not work properly with -Pusb flag
-    #       so we use avrdude directly instead. Also, avrdude does not work with
-    #       the usb interface of the board, so we use the serial number.
     avrdude_path = os.path.join('/', 'root', '.arduino15', 'packages', 'arduino',
                                  'tools', 'avrdude', '6.3.0-arduino17', 'bin', 'avrdude')
     avrdude_conf_path = os.path.join('/', 'root', '.arduino15', 'packages', 'arduino', 
@@ -168,6 +158,6 @@ def execute():
                avrdude_fuse_5, avrdude_fuse_8, avrdude_boot]
 
     result = subprocess.run(command, capture_output=True, text=True) 
-    print(result) # debug info
+    print(result) # Debug info
     resp = jsonify(board=board)
     return resp
