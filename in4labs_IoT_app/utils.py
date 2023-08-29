@@ -5,17 +5,27 @@ import re
 from flask import current_app
 
 
-def convert_usb_ports(boards):
+def get_usb_config(boards):
     result = subprocess.run(['dmesg'], capture_output=True, text=True)
     dmesg_output = result.stdout
 
-    pattern = r'(1-1.\d).*?(tty\w\w\w\d)'
-    matches = re.findall(pattern, dmesg_output)
+    pattern_usb_interface = r'(1-1.\d).*?(tty\w\w\w\d)'
+    pattern_serial_number = r'(1-1.\d): SerialNumber:\s(.*?)\n'
+    matches_interface = re.findall(pattern_usb_interface, dmesg_output)
+    matches_serial_number = re.findall(pattern_serial_number, dmesg_output)
+
+    matches = []
+    for match_interface in matches_interface:
+        for match_serial_number in matches_serial_number:
+            if match_interface[0] == match_serial_number[0]:
+                matches.append(match_interface + match_serial_number[1:])
+                break
 
     for match in matches:
         for board in boards.values():
             if board['usb_port'] == match[0]:
-                board['usb_port'] = match[1]
+                board['usb_interface'] = match[1]
+                board['serial_number'] = match[2]
                 break
 
     return boards

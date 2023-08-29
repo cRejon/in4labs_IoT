@@ -5,7 +5,7 @@ import subprocess
 from flask import Flask, render_template, url_for, jsonify, redirect, flash, send_file, request
 from flask_login import LoginManager, UserMixin, login_required, current_user, login_user
 
-from .utils import convert_usb_ports, create_editor, create_navtab
+from .utils import get_usb_config, create_editor, create_navtab
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -41,7 +41,7 @@ boards = {
     }
 }
 
-boards = convert_usb_ports(boards)
+boards = get_usb_config(boards)
 
 
 login_manager = LoginManager()
@@ -132,26 +132,29 @@ def compile():
 
 @app.route('/execute', methods=['POST'])
 @login_required
-def execute():       
+def execute():
     board = request.form['board']
     target = request.form['target']
 
     if (target == 'user'): 
         input_file = os.path.join(app.instance_path, 'compilations', board, 'build','temp_sketch.ino.hex')
     else: # target == 'stop'
-        input_file = os.path.join(app.instance_path, 'compilations', 'precompiled','stop.hex')
+        #input_file = os.path.join(app.instance_path, 'compilations', 'precompiled','stop.hex')
+        input_file = os.path.join(app.instance_path, 'compilations', 'precompiled','stop.ino.bin')
 
-    usb_port = boards[board]['usb_port']
+    # Take the last two digits of the serial number
+    serial_number = boards[board]['serial_number'][-2:]
 
     # NOTE: arduino-cli upload command does not work properly with -Pusb flag
-    #       so we use avrdude directly instead
+    #       so we use avrdude directly instead. Also, avrdude does not work with
+    #       the usb interface of the board, so we use the serial number.
     avrdude_path = os.path.join('/', 'root', '.arduino15', 'packages', 'arduino',
                                  'tools', 'avrdude', '6.3.0-arduino17', 'bin', 'avrdude')
     avrdude_conf_path = os.path.join('/', 'root', '.arduino15', 'packages', 'arduino', 
                                      'tools', 'avrdude', '6.3.0-arduino17', 'etc', 'avrdude.conf')
     avrdude_partno = 'atmega4809'
     avrdude_programer_id = 'xplainedmini_updi'
-    avrdude_usb_port = '-Pusb:'+ usb_port
+    avrdude_usb_port = '-Pusb '+ serial_number
     avrdude_baudrate = '115200'
     avrdude_sketch =  '-Uflash:w:'+ input_file +':i'
     avrdude_fuse_2 = '-Ufuse2:w:0x01:m'
