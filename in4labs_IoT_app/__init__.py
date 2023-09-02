@@ -43,14 +43,17 @@ boards = {
 
 boards = get_usb_config(boards) # Get the serial number and driver of the boards
 
-app = Flask(__name__, instance_path=os.path.join(os.getcwd(), os.pardir, 'arduino'))
+app = Flask(__name__, instance_path=os.path.join(os.getcwd(), 'arduino'))
 app.config.from_mapping(flask_config)
 
 # Create the subfolders for the compilations
-for board in boards.keys():
-    os.makedirs(os.path.join(app.instance_path, 'compilations', board))
-    for dir in ['build', 'cache', 'temp_sketch']:
-        os.makedirs(os.path.join(app.instance_path, 'compilations', board, dir))
+try:
+    for board in boards.keys():
+        os.makedirs(os.path.join(app.instance_path, 'compilations', board))
+        for dir in ['build', 'cache', 'temp_sketch']:
+            os.makedirs(os.path.join(app.instance_path, 'compilations', board, dir))
+except OSError:
+    pass
 
 # Flask-Login configuration
 login_manager = LoginManager()
