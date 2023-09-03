@@ -137,6 +137,24 @@ function onExecuteCode(board) {
     loader.show();
 }
 
+/**
+ * Function that is triggered when the user wants to monitor the serial output
+ */
+function onMonitor(board) {
+
+    // Send the instruction through an Ajax Post
+    $.ajax({
+        type: "GET",
+        url: "monitor",
+        data: {board:board},
+        success: monitoringFeedback,
+        error: ajaxError
+    });
+
+    // Display loader animation
+    let loader = $('#loader-bg');
+    loader.show();
+}
 
 /**
  * Function that is triggered when the user wants to stop the program execution
@@ -151,8 +169,9 @@ function onStopExecution(board) {
     });
 
     // Disable the stop execution button
-    $('#button-stop-'+board).tooltip('hide');
     $('#button-stop-'+board).prop('disabled', true);
+
+    $('#button-monitor-'+board).prop('disabled', true);
 }
 
 
@@ -198,10 +217,32 @@ function executionFeedback(response) {
 
     let board = response.board
     
+    // Enable the monitor button after a successful execution
+    $('#button-monitor-'+board).prop('disabled', false);
+
     // Enable the stop execution button after a successful execution
     $('#button-stop-'+board).prop('disabled', false);
 }
 
+/**
+ * Function that is executed once a monitoring process has been performed in the back-end.
+ *
+ * @param response, contains the board used and the serial monitor result.
+ */
+function monitoringFeedback(response) {
+
+    // Hide loader animation
+    let loader = $('#loader-bg');
+    loader.hide();
+
+    let board = response.board
+    let output = response.output
+
+    // Print the monitor result in the modal
+    $('#modal_message').modal('show');
+    $('#modal-msg').text(messages.SERIAL_OUTPUT).after('<pre>' + output + '</pre>');
+
+}
 
 /**
  * Function that is executed in case that an ajax operation finishes abnormally.

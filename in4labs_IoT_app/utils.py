@@ -91,6 +91,15 @@ def create_editor(board):
                                             disabled="disabled">
                                         <span class="fa fa-play-circle"/>
                                     </button>
+                                    <button class="monitor"
+                                            id="button-monitor-{board}"
+                                            onclick="onMonitor('{board}')"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Monitor"
+                                            disabled="disabled">
+                                        <span class="fa fa-terminal"/>
+                                    </button>
                                     <button class="stop"
                                             id="button-stop-{board}"
                                             onclick="onStopExecution('{board}')"

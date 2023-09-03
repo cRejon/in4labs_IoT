@@ -2,10 +2,11 @@
 /**
  * Function that is triggered when the code in the editor changes.
  */
-function onChangeCode(node) {
+function onChangeCode(board) {
 
     // When the code is changed, disable the execute button so that it must be compiled again
-    $('#button-execute-'+node).prop('disabled', true);
+    $('#button-execute-'+board).prop('disabled', true);
+    $('#button-monitor-'+board).prop('disabled', true);
 }
 
 /**
@@ -34,12 +35,13 @@ function countdownTimer(end_time) {
             $('button.upload').prop('disabled',true);
             $('button.compile').prop('disabled',true);
             $('button.execute').prop('disabled',true);
+            $('button.monitor').prop('disabled',true);
             $('button.stop').prop('disabled',true);
             // Notify the user
             $('#modal_message').modal('show');
             $('#modal-msg').text(messages.SESSION_EXPIRED);
             $('#camera').prepend('<div class="session_blocked"><p>' + messages.SESSION_EXPIRED + '</p></div>');
-        return;
+            $('#cam').prop('src', '');
         }
 
         // Convert the remaining time to minutes and seconds

@@ -170,3 +170,27 @@ def execute():
     print(result) # Debug info
     resp = jsonify(board=board)
     return resp
+
+@app.route('/monitor', methods=['GET'])
+@login_required
+def monitor():
+    board = request.args.get('board')
+    timeout = request.args.get('timeout', default=10, type=int)
+
+    usb_interface = boards[board]['usb_interface']
+
+    command = ['arduino-cli', 'monitor', '-p', f'/dev/{usb_interface}']
+
+    try:
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=timeout)
+
+    except subprocess.TimeoutExpired as e:
+        result = e
+
+    if result.stdout is None:
+        output = ''
+    else:
+        output = result.stdout.decode('utf-8')
+        
+    resp = jsonify(board=board, output=output)
+    return resp
