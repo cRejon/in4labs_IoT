@@ -140,8 +140,7 @@ def execute():
     if (target == 'user'): 
         input_file = os.path.join(app.instance_path, 'compilations', board, 'build','temp_sketch.ino.hex')
     else: # target == 'stop'
-        #input_file = os.path.join(app.instance_path, 'compilations', 'precompiled','stop.hex')
-        input_file = os.path.join(app.instance_path, 'compilations', 'precompiled','stop.ino.bin')
+        input_file = os.path.join(app.instance_path, 'compilations', 'precompiled','stop.ino.hex')
 
     # NOTE: Arduino-cli uses AVRdude to upload the code and it does not work properly if -Pusb flag is used with 
     #       the usb interface of the board, so we use the last two digits of the serial number instead.
