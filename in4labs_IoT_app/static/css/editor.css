@@ -19,12 +19,11 @@
     border-radius: 4px;
 }
 .camera {
-    width: 650px;
+    width: 560px;
     float: left;
-    margin-left: 10px;
 }
 .editor {
-    width: calc(100% - 680px);
+    width: calc(100% - 580px);
     float: left;
 }
 
