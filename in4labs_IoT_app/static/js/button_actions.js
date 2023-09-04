@@ -241,7 +241,10 @@ function monitoringFeedback(response) {
     // Print the monitor result in the modal
     $('#modal_message').modal('show');
     $('#modal-msg').text(messages.SERIAL_OUTPUT).after('<pre>' + output + '</pre>');
-
+    
+    $('#modal_message').on('hidden.bs.modal', function() {
+        $('#modal_message pre').remove();
+    })
 }
 
 /**
