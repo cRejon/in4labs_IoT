@@ -181,7 +181,7 @@ button[disabled] {
     border: none;
 }
 
-.buttons .btn-primary:before {
+.nav-link:before {
     content: "";
     display: inline-block;
     color: #fff;
@@ -191,24 +191,25 @@ button[disabled] {
     vertical-align: middle;
     top: -1px;
 }
-.btn-primary {
+
+.nav-link {
     padding-bottom: 6px;
 }
 
-.buttons .btn-primary.sensor:before {
+.nav-link.sensor:before {
     background: url("../img/sensor_icon.svg") no-repeat scroll center center / 100% auto rgba(0, 0, 0, 0);
     width: 25px;
     top: -2px;
     margin-right: 8px;
 }
 
-.buttons .btn-primary.tft:before {
+.nav-link.tft:before {
     background: url("../img/tft_icon.svg") no-repeat scroll center center / 100% auto rgba(0, 0, 0, 0);
     width: 38px;
     margin-right: 7px;
 }
 
-.buttons .btn-primary.fan:before {
+.nav-link.fan:before {
     background: url("../img/fan_icon.svg") no-repeat scroll center center / 100% auto rgba(0, 0, 0, 0);
     width: 35px;
     margin-right: 7px;
