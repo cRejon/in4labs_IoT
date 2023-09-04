@@ -57,9 +57,15 @@ docker_env = {
     'CAM_URL': lab.get('cam_url', ''),
 }
 
-#container = client.containers.run(image_name, detach=True, remove=True, devices=['/dev/ttyACM0:/dev/ttyACM0:rwm'],
-container = client.containers.run(image_name, detach=True, remove=True, volumes={'/dev/bus/usb': {'bind': '/dev/bus/usb', 'mode': 'rw'}},
-                                    privileged=True, ports={'8000/tcp': ('0.0.0.0', lab_port)}, environment=docker_env)
+# Run the container
+container = client.containers.run(image_name, 
+                                  detach=True, 
+                                  privileged=True, 
+                                  remove=True, 
+                                  tty=True,
+                                  volumes={'/dev/bus/usb': {'bind': '/dev/bus/usb', 'mode': 'rw'}},
+                                  ports={'8000/tcp': ('0.0.0.0', lab_port)}, 
+                                  environment=docker_env)
 
 stop_container = StopContainerTask(container, end_time)
 stop_container.start()
