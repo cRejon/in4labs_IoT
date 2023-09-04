@@ -5,6 +5,40 @@ Implementation of the IoT remote lab inside a Docker container that will be run 
 Tested on Raspberry Pi OS Bullseye (64-bit).  
 Requires Python >=3.9.
 
+# Installation
+Connect each Arduino board to the Raspberry Pi according to boards configuration.
+```
+# Boards configuration
+boards = {
+    'Board_1':{
+        'name':'Sensor',
+        'model':'Arduino Uno WiFi Rev2',
+        'fqbn':'arduino:megaavr:uno2018',
+        'usb_port':'1-1.1',
+    },
+    'Board_2':{
+        'name':'TFT',
+        'model':'Arduino Uno WiFi Rev2',
+        'fqbn':'arduino:megaavr:uno2018',
+        'usb_port':'1-1.2',
+    },
+    'Board_3':{
+        'name':'Fan',
+        'model':'Arduino Uno WiFi Rev2',
+        'fqbn':'arduino:megaavr:uno2018',
+        'usb_port':'1-1.3',
+    }
+}
+```
+If you look at the USB hub from the front, the port numbering is as follows.
+
+                _______    _______ 
+               | _____ |  | _____ | 
+        3-->   ||_____||  ||_____||  <-- 1
+               | _____ |  | _____ | 
+        4-->   ||_____||  ||_____||  <-- 2
+               |_______|__|_______|
+
 # Testing
 ## Setup Raspberry Pi
 ### Docker installation
