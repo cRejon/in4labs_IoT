@@ -42,6 +42,7 @@ function countdownTimer(end_time) {
             $('#modal-msg').text(messages.SESSION_EXPIRED);
             $('#camera').prepend('<div class="session_blocked"><p>' + messages.SESSION_EXPIRED + '</p></div>');
             $('#cam').prop('src', '');
+        return;
         }
 
         // Convert the remaining time to minutes and seconds
