@@ -174,14 +174,15 @@ def execute():
 @login_required
 def monitor():
     board = request.args.get('board')
-    timeout = request.args.get('timeout', default=10, type=int)
+    baudrate = request.args.get('baudrate', default=9600, type=int)
+    seconds = request.args.get('seconds', default=10, type=int)
 
     usb_interface = boards[board]['usb_interface']
 
-    command = ['arduino-cli', 'monitor', '-p', f'/dev/{usb_interface}']
+    command = ['arduino-cli', 'monitor', '-p', f'/dev/{usb_interface}', '--config', f'baudrate={baudrate}']
 
     try:
-        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=timeout)
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=seconds)
 
     except subprocess.TimeoutExpired as e:
         result = e

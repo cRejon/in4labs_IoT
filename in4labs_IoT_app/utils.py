@@ -93,7 +93,7 @@ def create_editor(board):
                                     </button>
                                     <button class="monitor"
                                             id="button-monitor-{board}"
-                                            onclick="onMonitor('{board}')"
+                                            onclick="setupMonitor('{board}')"
                                             data-toggle="tooltip"
                                             data-placement="top"
                                             title="Monitor"

@@ -137,16 +137,31 @@ function onExecuteCode(board) {
     loader.show();
 }
 
+function setupMonitor(board) {
+
+    $('#modal_message').modal('show');
+    let setup = $('#modal-setup-monitor');
+    setup.show();
+    $('#modal-msg').text(messages.SERIAL_OUTPUT_CONFIG);
+
+    $('#modal_message').one('hidden.bs.modal', function() {
+        setup.hide();
+        let baudrate = $('#baudrate-select').val();
+        let seconds = $('#seconds-select').val();
+        onMonitor(board, baudrate, seconds);
+    })
+}
+
 /**
  * Function that is triggered when the user wants to monitor the serial output
  */
-function onMonitor(board) {
+function onMonitor(board, baudrate, seconds) {
 
     // Send the instruction through an Ajax Post
     $.ajax({
         type: "GET",
         url: "monitor",
-        data: {board:board},
+        data: {board:board, baudrate:baudrate, seconds:seconds},
         success: monitoringFeedback,
         error: ajaxError
     });
