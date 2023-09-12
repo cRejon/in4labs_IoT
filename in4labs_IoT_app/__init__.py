@@ -152,7 +152,7 @@ def execute():
                                      'tools', 'avrdude', '6.3.0-arduino17', 'etc', 'avrdude.conf')
     avrdude_partno = 'atmega4809'
     avrdude_programer_id = 'xplainedmini_updi'
-    avrdude_usb_port = '-Pusb '+ serial_number
+    avrdude_usb_port = '-Pusb:'+ serial_number
     avrdude_baudrate = '115200'
     avrdude_sketch =  '-Uflash:w:'+ input_file +':i'
     avrdude_fuse_2 = '-Ufuse2:w:0x01:m'
