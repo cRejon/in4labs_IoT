@@ -2,7 +2,7 @@ In4Labs - Internet of Things remote lab
 =====
 # Description
 Implementation of the IoT remote lab inside a Docker container that will be run by [In4Labs base LTI tool](https://github.com/cRejon/in4labs).   
-Tested on Raspberry Pi OS Bullseye (64-bit).  
+Tested on Raspberry Pi OS Lite Bullseye (64-bit).  
 Requires Python >=3.9.
 
 # Installation
@@ -42,13 +42,24 @@ If you look at the USB hub from the front, the port numbering is as follows.
 # Testing
 ## Setup Raspberry Pi
 ### Docker installation
-Assuming the user is **pi** (default)
 ```
 $ sudo apt update
 $ curl -fsSL https://get.docker.com -o get-docker.sh
 $ sudo sh get-docker.sh
-$ sudo usermod -aG docker pi
 $ rm get-docker.sh
+```
+Run the Docker daemon as a non-root user ([Rootless mode](https://docs.docker.com/engine/security/rootless/)).
+```
+$ sudo apt-get install -y uidmap fuse-overlayfs
+$ sudo systemctl disable --now docker.service docker.socket
+$ /usr/bin/dockerd-rootless-setuptool.sh install
+$ export PATH=/usr/bin:$PATH
+$ export DOCKER_HOST=unix:///run/user/1000/docker.sock
+```
+To launch the daemon on system startup, enable the systemd service and lingering:
+```
+$ systemctl --user enable docker
+$ sudo loginctl enable-linger $(whoami)
 ```
 ### Python packages
 ```
