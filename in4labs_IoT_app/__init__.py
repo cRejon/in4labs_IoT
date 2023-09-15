@@ -10,14 +10,13 @@ from .utils import get_usb_config, create_editor, create_navtab
 
 # Flask environment variable needed for session management
 flask_config = {
-    'SECRET_KEY': os.environ.get('SECRET_KEY') or 'super-secret-key',
+    'SECRET_KEY': os.environ.get('USER_EMAIL'), # use the user email as secret key
 }
 
-# Docker environment variables (for production delete lab_duration and OR statements)
-lab_duration = 1
-cam_url = os.environ.get('CAM_URL') or 'http://62.204.201.51:8100/Mjpeg/1?authToken=2454ef16-84cf-4184-a748-8bddd993c078'
-user_email = os.environ.get('USER_EMAIL') or 'admin@email.com'
-end_time = os.environ.get('END_TIME') or (datetime.now() + timedelta(minutes=lab_duration)).strftime('%Y-%m-%dT%H:%M:%S')
+# Docker environment variables
+cam_url = os.environ.get('CAM_URL') 
+user_email = os.environ.get('USER_EMAIL') 
+end_time = os.environ.get('END_TIME') 
 
 # Boards configuration
 boards = {
