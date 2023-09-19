@@ -9,8 +9,8 @@ def get_usb_config(boards):
     result = subprocess.run(['dmesg'], capture_output=True, text=True)
     dmesg_output = result.stdout
 
-    pattern_usb_interface = r'(1-1.\d).*?(tty\w\w\w\d)'
-    pattern_serial_number = r'(1-1.\d): SerialNumber:\s(.*?)\n'
+    pattern_usb_interface = r'1-1.(\d).*?(tty\w\w\w\d)'
+    pattern_serial_number = r'1-1.(\d): SerialNumber:\s(.*?)\n'
     matches_interface = re.findall(pattern_usb_interface, dmesg_output)
     matches_serial_number = re.findall(pattern_serial_number, dmesg_output)
 
