@@ -24,19 +24,19 @@ boards = {
         'name':'Sensor',
         'model':'Arduino Uno WiFi Rev2',
         'fqbn':'arduino:megaavr:uno2018',
-        'usb_port':'1-1.1',
+        'usb_port':'1',
     },
     'Board_2':{
         'name':'TFT',
         'model':'Arduino Uno WiFi Rev2',
         'fqbn':'arduino:megaavr:uno2018',
-        'usb_port':'1-1.2',
+        'usb_port':'2',
     },
     'Board_3':{
         'name':'Fan',
         'model':'Arduino Uno WiFi Rev2',
         'fqbn':'arduino:megaavr:uno2018',
-        'usb_port':'1-1.3',
+        'usb_port':'3',
     }
 }
 
