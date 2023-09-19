@@ -72,7 +72,7 @@ user = User(id=1, email=user_email)
 
 
 # Flask routes
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index')) 
@@ -84,7 +84,7 @@ def login():
             return redirect(url_for('index'))
     return render_template('login.html')
 
-@app.route('/')
+@app.route('/index')
 @login_required
 def index():
     navtabs = []
