@@ -42,24 +42,39 @@ If you look at the USB hub from the front, the port numbering is as follows.
 # Testing
 ## Setup Raspberry Pi
 ### Docker installation
+1. Run the following command to uninstall all conflicting packages:
+```
+$ for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done
+```
+2. Add Docker's official GPG key:
 ```
 $ sudo apt update
-$ curl -fsSL https://get.docker.com -o get-docker.sh
-$ sudo sh get-docker.sh
-$ rm get-docker.sh
+$ sudo apt install ca-certificates curl gnupg
+$ sudo install -m 0755 -d /etc/apt/keyrings
+$ curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+$ sudo chmod a+r /etc/apt/keyrings/docker.gpg
 ```
-Run the Docker daemon as a non-root user ([Rootless mode](https://docs.docker.com/engine/security/rootless/)).
+3. Add the repository to Apt sources:
 ```
-$ sudo apt-get install -y uidmap fuse-overlayfs
-$ sudo systemctl disable --now docker.service docker.socket
-$ /usr/bin/dockerd-rootless-setuptool.sh install
-$ export PATH=/usr/bin:$PATH
-$ export DOCKER_HOST=unix:///run/user/1000/docker.sock
+$ echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+$ sudo apt update
 ```
-To launch the daemon on system startup, enable the systemd service and lingering:
+4. Install the Docker packages:
 ```
-$ systemctl --user enable docker
-$ sudo loginctl enable-linger $(whoami)
+$ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+5. Manage Docker as a non-root user:
+``` 
+$ sudo groupadd docker
+$ sudo usermod -aG docker $USER
+$ newgrp docker
+```
+6. Verify that the installation is successful by running the _hello-world_ image:
+```
+$ docker run hello-world
 ```
 ### Python packages
 ```
