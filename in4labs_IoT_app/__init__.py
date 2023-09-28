@@ -1,6 +1,7 @@
 import os
-from datetime import datetime, timedelta
 import subprocess
+
+import pexpect
 
 from flask import Flask, render_template, url_for, jsonify, redirect, send_file, request
 from flask_login import LoginManager, UserMixin, login_required, current_user, login_user
@@ -178,18 +179,14 @@ def monitor():
 
     usb_interface = boards[board]['usb_interface']
 
-    command = ['arduino-cli', 'monitor', '-p', f'/dev/{usb_interface}', '--config', f'baudrate={baudrate}']
-
+    command = f'arduino-cli monitor -p /dev/{usb_interface} --quiet --config baudrate={baudrate}'
+    # NOTE: pexpect is used because arduino-cli monitor expects to run in an interactive 
+    #       terminal environment and subprocess.run() does not work properly.
     try:
-        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=seconds)
-
-    except subprocess.TimeoutExpired as e:
-        result = e
-
-    if result.stdout is None:
-        output = ''
-    else:
-        output = result.stdout.decode('utf-8')
+        child = pexpect.spawn(command, timeout=seconds)
+        output = child.read().decode('utf-8')
+    except pexpect.TIMEOUT:
+        output = child.before.decode('utf-8')
         
     resp = jsonify(board=board, output=output)
     return resp
