@@ -28,7 +28,7 @@ boards = {
         'usb_port':'1',
     },
     'Board_2':{
-        'name':'TFT',
+        'name':'LCD',
         'model':'Arduino Uno WiFi Rev2',
         'fqbn':'arduino:megaavr:uno2018',
         'usb_port':'2',
