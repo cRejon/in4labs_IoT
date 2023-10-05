@@ -203,8 +203,8 @@ button[disabled] {
     margin-right: 8px;
 }
 
-.nav-link.tft:before {
-    background: url("../img/tft_icon.svg") no-repeat scroll center center / 100% auto rgba(0, 0, 0, 0);
+.nav-link.lcd:before {
+    background: url("../img/lcd_icon.svg") no-repeat scroll center center / 100% auto rgba(0, 0, 0, 0);
     width: 38px;
     margin-right: 7px;
 }
