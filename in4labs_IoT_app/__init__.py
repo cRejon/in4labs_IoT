@@ -2,7 +2,7 @@ import os
 import subprocess
 
 import pexpect
-
+import requests
 from flask import Flask, render_template, url_for, jsonify, redirect, send_file, request
 from flask_login import LoginManager, UserMixin, login_required, current_user, login_user
 
@@ -189,4 +189,19 @@ def monitor():
         output = child.before.decode('utf-8')
         
     resp = jsonify(board=board, output=output)
+    return resp
+
+@app.route('/suggest', methods=['POST'])
+@login_required
+def suggest():
+    board = request.form['board']
+    code = request.form['text']
+
+    params = {'action': '16', 'text': code}
+    url = 'https://open.ieec.uned.es/v_innovacion/api.php'
+
+    r = requests.get(url, params=params)
+    suggestion = r.text
+
+    resp = jsonify(board=board, suggestion=suggestion)
     return resp

@@ -33,6 +33,7 @@ function countdownTimer(end_time) {
             // Disable actions
             $('select.editor-select').prop('disabled',true);
             $('button.upload').prop('disabled',true);
+            $('button.suggest').prop('disabled',true);
             $('button.compile').prop('disabled',true);
             $('button.execute').prop('disabled',true);
             $('button.monitor').prop('disabled',true);

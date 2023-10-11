@@ -172,6 +172,26 @@ function onMonitor(board, baudrate, seconds) {
 }
 
 /**
+ * Function that is triggered when the user wants to get suggestions for the code with ChatGPT
+ */
+function onSuggest(board) {
+
+    let text = getEditor(board).getValue();
+
+    $.ajax({
+        type: "POST",
+        url: "suggest",
+        data: {board:board, text:text},
+        success: suggestionFeedback,
+        error: ajaxError
+    });
+
+    // Display loader animation
+    let loader = $('#loader-bg');
+    loader.show();
+}
+
+/**
  * Function that is triggered when the user wants to stop the program execution
  */
 function onStopExecution(board) {
@@ -256,6 +276,28 @@ function monitoringFeedback(response) {
     // Print the monitor result in the modal
     $('#modal_message').modal('show');
     $('#modal-msg').text(messages.SERIAL_OUTPUT).after('<pre>' + output + '</pre>');
+    
+    $('#modal_message').on('hidden.bs.modal', function() {
+        $('#modal_message pre').remove();
+    })
+}
+
+/**
+ * Function that is executed once a monitoring process has been performed in the back-end.
+ *
+ * @param response, contains the board used and the serial monitor result.
+ */
+function suggestionFeedback(response) {
+
+    // Hide loader animation
+    let loader = $('#loader-bg');
+    loader.hide();
+
+    let board = response.board
+    let suggestion = response.suggestion
+
+    $('#modal_message').modal('show');
+    $('#modal-msg').text(messages.SUGGEST).after('<pre>' + suggestion + '</pre>');
     
     $('#modal_message').on('hidden.bs.modal', function() {
         $('#modal_message pre').remove();

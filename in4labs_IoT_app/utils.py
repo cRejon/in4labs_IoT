@@ -73,6 +73,14 @@ def create_editor(board):
                                         document.getElementById('file-input-{board}').addEventListener('change', onLoadFile, false);
                                     </script>
                                     <button class="download" onclick="onSaveFile('{board}')" data-toggle="tooltip" data-placement="top" title="Save File"><span class="fa fa-download"/></button>
+                                    <button class="suggest"
+                                            id="button-suggest-{board}"
+                                            onclick="onSuggest('{board}')"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Suggest">
+                                        <span class="fa fa-commenting"/>
+                                    </button>
                                 </div>
                                 <div class="editor-cta-compile">
                                     <button class="compile"
