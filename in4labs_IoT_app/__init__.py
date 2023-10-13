@@ -3,7 +3,7 @@ import subprocess
 
 import pexpect
 import requests
-from flask import Flask, render_template, url_for, jsonify, redirect, send_file, request
+from flask import Flask, render_template, url_for, jsonify, redirect, send_file, flash, request
 from flask_login import LoginManager, UserMixin, login_required, current_user, login_user
 
 from .utils import get_usb_config, create_editor, create_navtab
@@ -83,6 +83,9 @@ def login():
         if email == user_email:
             login_user(user)
             return redirect(url_for('index'))
+        else:
+            flash('Invalid email address. Please try again.')
+    
     return render_template('login.html')
 
 @app.route('/index')
