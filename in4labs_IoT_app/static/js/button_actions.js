@@ -14,18 +14,13 @@ function getEditor(board) {
  * Function that selects one example from a set of local predefined example files and loads in into
  * the editor.
  */
-function onLoadExample(board,example) {
-
-    // If "new" is selected, load the default empty sketch
-    if (example === "new") {
-        example = "empty_sketch.ino";
-    }
+function onLoadExample(board, example) {
 
     // Load the file into the editor
     $.ajax({
         type: "GET",
         url: "get_example",
-        data: {board:board, example:example},
+        data: {example:example},
         dataType: "text",
         success: function(response) {
             let editor = getEditor(board);

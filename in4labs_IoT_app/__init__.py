@@ -22,19 +22,22 @@ end_time = os.environ.get('END_TIME')
 # Boards configuration
 boards = {
     'Board_1':{
-        'name':'Sensor',
-        'model':'Arduino Uno WiFi Rev2',
-        'fqbn':'arduino:megaavr:uno2018',
-        'usb_port':'1',
-    },
-    'Board_2':{
         'name':'LCD',
+        'role':'Master',
         'model':'Arduino Uno WiFi Rev2',
         'fqbn':'arduino:megaavr:uno2018',
         'usb_port':'2',
     },
+    'Board_2':{
+        'name':'Sensor',
+        'role':'Slave',
+        'model':'Arduino Uno WiFi Rev2',
+        'fqbn':'arduino:megaavr:uno2018',
+        'usb_port':'1',
+    },
     'Board_3':{
         'name':'Fan',
+        'role':'Slave',
         'model':'Arduino Uno WiFi Rev2',
         'fqbn':'arduino:megaavr:uno2018',
         'usb_port':'3',
@@ -93,8 +96,8 @@ def login():
 def index():
     navtabs = []
     editors = []
-    for board in boards.keys():
-        navtabs.append(create_navtab(board=board, name=boards[board]['name']))
+    for board in boards.items():
+        navtabs.append(create_navtab(board))
         editors.append(create_editor(board))
     return render_template('index.html', boards=boards, navtabs=navtabs,
                                 editors=editors, cam_url=cam_url, end_time=end_time)
@@ -102,15 +105,16 @@ def index():
 @app.route('/get_example', methods=['GET'])
 @login_required
 def get_example(): 
-    board = request.args.get('board')
-    example = request.args.get('example')
+    example = request.args.get('example')      
+    examples_path = os.path.join(app.instance_path, 'examples')
 
-    if example == 'empty_sketch.ino':
-        file_path = os.path.join(app.instance_path, 'examples', 'empty_sketch.ino') 
-    else:
-        file_path = os.path.join(app.instance_path, 'examples', board, example)
+    # Find example file in the corresponding folder
+    for folder in os.listdir(examples_path):
+        if example in os.listdir(os.path.join(examples_path, folder)):
+            example_file = os.path.join(examples_path, folder, example)
+            break
 
-    return send_file(file_path, mimetype='text')
+    return send_file(example_file, mimetype='text')
 
 @app.route('/compile', methods=['POST'])
 @login_required

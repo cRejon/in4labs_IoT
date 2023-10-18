@@ -30,52 +30,68 @@ def get_usb_config(boards):
 
     return boards
 
+def fill_examples(board):
+    key = board[0]
+    role = board[1]['role']
 
-def create_navtab(board, name):
+    commons_path = os.path.join(current_app.instance_path, 'examples', 'Commons')
+    role_path = os.path.join(current_app.instance_path, 'examples', role)
+    key_path = os.path.join(current_app.instance_path, 'examples', key)
+
+    examples = []
+    for path in [commons_path, role_path, key_path]:
+        examples += [file for file in os.listdir(path) if file.endswith('.ino')]
+    # Sort them alphabetically
+    examples.sort()
+
+    # Convert example names to show spaces instead of underscores and remove .ino extension 
+    example_names = [example.replace('_', ' ').replace('.ino', '') for example in examples]
+
+    examples_html = ''
+    for example, example_name in zip(examples, example_names):
+        if example_name == 'New Sketch':
+            examples_html += f'<option value="{example}" selected="selected">{example_name}</option>\n'
+        else:
+            examples_html += f'<option value="{example}">{example_name}</option>\n'
+    
+    return examples_html
+
+def create_navtab(board):
+    key = board[0]
+    name = board[1]['name'].lower()
     navtab_html = f'''
-        <button class="nav-link {name.lower()} col-sm-4" id="nav-{board}-tab" data-bs-toggle="tab" data-bs-target="#nav-{board}" type="button" role="tab" aria-controls="nav-{board}" aria-selected="true">{name}</button>
+        <button class="nav-link {name} col-sm-4" id="nav-{key}-tab" data-bs-toggle="tab" data-bs-target="#nav-{key}" type="button" role="tab" aria-controls="nav-{key}" aria-selected="true">{name}</button>
     '''
 
     return navtab_html
 
-def fill_examples(board):
-    examples_path = os.path.join(current_app.instance_path, 'examples', board)
-    examples = [f for f in os.listdir(examples_path) if os.path.isfile(os.path.join(examples_path, f))]
-    # Convert example names to show spaces instead of underscores and remove .ino extension
-    examples_name = [example.replace('_', ' ').replace('.ino', '') for example in examples]
-
-    examples_html = ''
-    for example, example_name in zip(examples, examples_name):
-        examples_html += f'<option value="{example}">{example_name}</option>\n'
-    
-    return examples_html
-
 def create_editor(board):
+    key = board[0]
+
     examples = fill_examples(board)
 
     editor_html = f'''
-                <div class="tab-pane fade active show" id="nav-{board}" role="tabpanel" aria-labelledby="nav-{board}-tab">
+                <div class="tab-pane fade active show" id="nav-{key}" role="tabpanel" aria-labelledby="nav-{key}-tab">
                     <div class="editor-nav">
                         <div class="row">
                             <div class="editor-examples col-sm-4">
                                 <div class="btn-group editor-examples-dropdown">
-                                    <select class="editor-select" id="editor-select-{board}" onchange="onLoadExample('{board}',this.value)">
-                                        <option value="new" selected="selected">New Sketch</option>
+                                    <select class="editor-select" id="editor-select-{key}" onchange="onLoadExample('{key}',this.value)">
                                         {examples}
                                     </select>
                                 </div>
                             </div>
                             <div class="editor-cta col-sm-8">
                                 <div class="editor-cta-load">
-                                    <button class="upload" onclick="document.getElementById('file-input-{board}').click()" data-toggle="tooltip" data-placement="top" title="Load File"><span class="fa fa-upload"/></button>
-                                    <input id="file-input-{board}" type="file" accept=".ino" style="display: none;" />
+                                    <button class="upload" onclick="document.getElementById('file-input-{key}').click()" data-toggle="tooltip" data-placement="top" title="Load File"><span class="fa fa-upload"/></button>
+                                    <input id="file-input-{key}" type="file" accept=".ino" style="display: none;" />
                                     <script>
-                                        document.getElementById('file-input-{board}').addEventListener('change', onLoadFile, false);
+                                        document.getElementById('file-input-{key}').addEventListener('change', onLoadFile, false);
                                     </script>
-                                    <button class="download" onclick="onSaveFile('{board}')" data-toggle="tooltip" data-placement="top" title="Save File"><span class="fa fa-download"/></button>
+                                    <button class="download" onclick="onSaveFile('{key}')" data-toggle="tooltip" data-placement="top" title="Save File"><span class="fa fa-download"/></button>
                                     <button class="suggest"
-                                            id="button-suggest-{board}"
-                                            onclick="onSuggest('{board}')"
+                                            id="button-suggest-{key}"
+                                            onclick="onSuggest('{key}')"
                                             data-toggle="tooltip"
                                             data-placement="top"
                                             title="Suggest">
@@ -84,15 +100,15 @@ def create_editor(board):
                                 </div>
                                 <div class="editor-cta-compile">
                                     <button class="compile"
-                                            onclick="onCompileCode('{board}')"
+                                            onclick="onCompileCode('{key}')"
                                             data-toggle="tooltip"
                                             data-placement="top"
                                             title="Compile code">
                                         <span class="fa fa-check"/>
                                     </button>
                                     <button class="execute"
-                                            id="button-execute-{board}"
-                                            onclick="onExecuteCode('{board}')"
+                                            id="button-execute-{key}"
+                                            onclick="onExecuteCode('{key}')"
                                             data-toggle="tooltip"
                                             data-placement="top"
                                             title="Run"
@@ -100,8 +116,8 @@ def create_editor(board):
                                         <span class="fa fa-play-circle"/>
                                     </button>
                                     <button class="monitor"
-                                            id="button-monitor-{board}"
-                                            onclick="setupMonitor('{board}')"
+                                            id="button-monitor-{key}"
+                                            onclick="setupMonitor('{key}')"
                                             data-toggle="tooltip"
                                             data-placement="top"
                                             title="Monitor"
@@ -109,8 +125,8 @@ def create_editor(board):
                                         <span class="fa fa-terminal"/>
                                     </button>
                                     <button class="stop"
-                                            id="button-stop-{board}"
-                                            onclick="onStopExecution('{board}')"
+                                            id="button-stop-{key}"
+                                            onclick="onStopExecution('{key}')"
                                             data-toggle="tooltip"
                                             data-placement="top"
                                             title="Stop"
@@ -121,24 +137,24 @@ def create_editor(board):
                             </div>
                         </div>
                     </div>
-                    <form id="editor-{board}">
-                        <textarea id="text-{board}" name="text-{board}"></textarea>
+                    <form id="editor-{key}">
+                        <textarea id="text-{key}" name="text-{key}"></textarea>
                         <script>
-                            let editor_{board} = CodeMirror.fromTextArea(document.getElementById('text-{board}'), {{
+                            let editor_{key} = CodeMirror.fromTextArea(document.getElementById('text-{key}'), {{
                                 mode: 'text/x-c++src',
                                 theme: 'neat',
                                 lineNumbers: true,
                                 autoCloseBrackets:true,
                             }});
 
-                            function {board}GetEditor() {{
-                                return editor_{board};
+                            function {key}GetEditor() {{
+                                return editor_{key};
                             }}
 
-                            onLoadExample('{board}','new');
+                            onLoadExample('{key}','New_Sketch.ino');
 
                             // Listener to trigger a function when the code changes
-                            editor_{board}.on("change", function() {{ onChangeCode('{board}') }});
+                            editor_{key}.on("change", function() {{ onChangeCode('{key}') }});
                         </script>
                     </form>
                 </div>
