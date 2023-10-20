@@ -58,9 +58,9 @@ def fill_examples(board):
 
 def create_navtab(board):
     key = board[0]
-    name = board[1]['name'].lower()
+    name = board[1]['name']
     navtab_html = f'''
-        <button class="nav-link {name} col-sm-4" id="nav-{key}-tab" data-bs-toggle="tab" data-bs-target="#nav-{key}" type="button" role="tab" aria-controls="nav-{key}" aria-selected="true">{name}</button>
+        <button class="nav-link {name.lower()} col-sm-4" id="nav-{key}-tab" data-bs-toggle="tab" data-bs-target="#nav-{key}" type="button" role="tab" aria-controls="nav-{key}" aria-selected="true">{name}</button>
     '''
 
     return navtab_html
