@@ -152,7 +152,8 @@ def create_editor(board):
                             }}
 
                             onLoadExample('{key}','New_Sketch.ino');
-
+                            onStopExecution('{key}');
+                            
                             // Listener to trigger a function when the code changes
                             editor_{key}.on("change", function() {{ onChangeCode('{key}') }});
                         </script>
