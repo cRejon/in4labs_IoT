@@ -11,7 +11,8 @@ from .utils import get_usb_config, create_editor, create_navtab
 
 # Flask environment variable needed for session management
 flask_config = {
-    'SECRET_KEY': os.environ.get('USER_EMAIL'), # use the user email as secret key
+    # Use as secret key the user email + the end time of the session 
+    'SECRET_KEY': os.environ.get('USER_EMAIL') + os.environ.get('END_TIME'),
 }
 
 # Docker environment variables
