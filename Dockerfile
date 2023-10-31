@@ -4,7 +4,7 @@ FROM python:3.10-slim-bullseye
 # Install Arduino CLI
 RUN apt-get update && apt-get install -y curl
 WORKDIR /usr/local
-RUN curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | ARDUINO_UPDATER_ENABLE_NOTIFICATION=false sh
+RUN curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | ARDUINO_UPDATER_ENABLE_NOTIFICATION=false sh -s 0.34.2
 RUN arduino-cli core update-index
 RUN arduino-cli core install arduino:megaavr
 RUN arduino-cli lib install "WiFiNINA"
