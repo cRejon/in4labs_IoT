@@ -134,12 +134,14 @@ function onExecuteCode(board) {
 
 function setupMonitor(board) {
 
+    $('#modal_dialog').addClass('modal-sm');
     $('#modal_message').modal('show');
     let setup = $('#modal-setup-monitor');
     setup.show();
     $('#modal-msg').text(messages.SERIAL_OUTPUT_CONFIG);
 
     $('#modal_message').one('hidden.bs.modal', function() {
+        $('#modal_dialog').removeClass('modal-sm');
         setup.hide();
         let baudrate = $('#baudrate-select').val();
         let seconds = $('#seconds-select').val();
@@ -221,11 +223,13 @@ function compilationFeedback(response) {
     // If there are errors
     if (error) {
         // Print the error message
+        $('#modal_dialog').addClass('modal-xl');
         $('#modal_message').modal('show');
         $('#modal-msg').text(messages.COMPILATION_ERROR).after('<pre>' + error + '</pre>');
 
         $('#modal_message').on('hidden.bs.modal', function() {
             $('#modal_message pre').remove();
+            $('#modal_dialog').removeClass('modal-xl');
         })
     } else {
         // Enable the execution button after a successful compilation
@@ -269,11 +273,13 @@ function monitoringFeedback(response) {
     let output = response.output
 
     // Print the monitor result in the modal
+    $('#modal_dialog').addClass('modal-lg');
     $('#modal_message').modal('show');
     $('#modal-msg').text(messages.SERIAL_OUTPUT).after('<pre>' + output + '</pre>');
     
     $('#modal_message').on('hidden.bs.modal', function() {
         $('#modal_message pre').remove();
+        $('#modal_dialog').removeClass('modal-lg');
     })
 }
 
@@ -291,11 +297,13 @@ function suggestionFeedback(response) {
     let board = response.board
     let suggestion = response.suggestion
 
+    $('#modal_dialog').addClass('modal-xl');
     $('#modal_message').modal('show');
     $('#modal-msg').text(messages.SUGGEST).after('<pre>' + suggestion + '</pre>');
     
     $('#modal_message').on('hidden.bs.modal', function() {
         $('#modal_message pre').remove();
+        $('#modal_dialog').removeClass('modal-xl');
     })
 }
 
