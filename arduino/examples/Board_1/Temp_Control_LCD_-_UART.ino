@@ -19,16 +19,18 @@
 #include <LiquidCrystal.h>      // include LCD library
 
 #define TEMP_LIMIT 50.0    // if this threshold is reached - instruct fan on 
-#define HUM_LIMIT 80.0     // if this threshold is reached - instruct fan on 
+#define ON 0x01            // value to write to BLE fan device to turn it on
+#define OFF 0x00           // value to write to BLE fan device to turn it off
+
+byte fanStatus = OFF;           // fan status
+byte previousFanStatus = OFF;   // previous fan status
+char tempRead[5];               // char array to hold temperature reading
+char humRead[5];                // char array to hold humidity reading
 
 // initialize the library by associating any needed LCD interface pin
 // with the arduino pin number it is connected to
 const int rs = 17, en = 16, d4 = 15, d5 = 14, d6 = 4, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
-
-String fanStatus = "OFF";             // fan status to be printed by LCD screen
-String temperatureRead;               // make a String to hold data received from the sensor
-String humidityRead;                  // make a String to hold data received from the sensor
 
 void setup() {
   Serial1.begin(115200);      // initialize serial and wait for port to open:
@@ -41,43 +43,53 @@ void setup() {
 }
 
 void loop() {
-  float temperatureFloat;     // make a float to convert String data and compare to TEMP_LIMIT
-  float humidityFloat;        // make a float to convert String data and compare to HUM_LIMIT
-  temperatureRead = "";       // clear data for new reading
-  humidityRead = "";          // clear data for new reading 
-
 
   Serial1.write("temperature");       // send request to obtain temperature sensor reading
   delay(100);                         // leave time for transmision to be received and replied generated
-  if (Serial1.available()){             // if feedback from sensor is received
-    String temp = Serial1.readString();    // read sensor data from serial
-    temperatureRead = temp;
-  }     
-  
+  // save temperature reading in tempRead char array
+  int i = 0;                          // counter for number of bytes received
+  while(Serial1.available()){         // slave may send less than requested
+      char c = Serial1.read();          // receive a byte as character
+      tempRead[i] =  c;                 // load received char into char array
+      i++;
+    if (i == 5){
+      break;  
+    }
+  }
+
   Serial1.write("humidity");          // send request to obtain humidity sensor reading
   delay(100);                         // leave time for transmision to be received and replied generated
-  if (Serial1.available()){             // if feedback from sensor is received
-    String hum = Serial1.readString();    // read sensor data from serial
-    humidityRead = hum;
-  }
+  // save humidity reading in humRead char array
+  int j = 0;                          // counter for number of bytes received
+  while(Serial1.available()){         // slave may send less than requested
+      char c = Serial1.read();          // receive a byte as character
+      humRead[j] =  c;                  // load received char into char array
+      j++;
+      if (j == 5){
+          break;  
+      }
+  }  
 
-  updateLCD();                        // dispaly sensor readings in LCD screen
+  // convert tempRead to float and compare to TEMP_LIMIT
+  float temperatureFloat = atof(tempRead);  // convert char array to float
+  if (temperatureFloat > TEMP_LIMIT){  // if the threshold is reached 
+    fanStatus = ON;           // activate fan
+  } else {
+    fanStatus = OFF;          
+  }  
 
-  temperatureFloat = temperatureRead.toFloat(); // convert String data and compare to TEMP_LIMIT
-  humidityFloat = humidityRead.toFloat();       // convert String data and compare to HUM_LIMIT
-
-  if (humidityFloat > HUM_LIMIT || temperatureFloat > TEMP_LIMIT){ // if any threshold is reached                            
-    Serial1.write("turnFanOn");       // send instruction to slaves to turn fan on
-    Serial1.flush();
-    fanStatus = "ON";                 // update fan status to be printed by LCD screen
-    
-  } else {                         // if no threshold is reached
-    Serial1.write("turnFanOff");      // send instruction to slaves to turn fan off
-    Serial1.flush();
-    fanStatus = "OFF";                // update fan status to be printed by LCD screen
+  if (fanStatus != previousFanStatus){ // if fan status has changed
+    if (fanStatus == ON){                                      
+      Serial1.write("turnFanOn");       // send instruction to slaves to turn fan on
+      Serial1.flush();
+    } else {                         
+      Serial1.write("turnFanOff");      // send instruction to slaves to turn fan off
+      Serial1.flush();
+    }
+    previousFanStatus = fanStatus;      // update previous fan status
   }
   
-  updateLCD();                     // dispaly new fan status in LCD screen
+  updateLCD();                     // update LCD screen with new sensor readings and fan status
   
   delay(2000);                     // wait 2 seconds before requesting new reading. Sensor sampling rate is 0.5Hz 
 }
@@ -90,14 +102,14 @@ void updateLCD() {
   lcd.setCursor(1, 0);
   lcd.print("T:");
   lcd.setCursor(3, 0);
-  lcd.print(temperatureRead);
+  lcd.print(tempRead);
   lcd.setCursor(7, 0);
   lcd.print(" C");
   
   lcd.setCursor(1, 1);
   lcd.print("H:");
   lcd.setCursor(3, 1);
-  lcd.print(humidityRead);
+  lcd.print(humRead);
   lcd.setCursor(7, 1);
   lcd.print(" %");
  
@@ -111,5 +123,9 @@ void updateLCD() {
   lcd.setCursor(12, 0);
   lcd.print("Fan");
   lcd.setCursor(12, 1);
-  lcd.print(fanStatus);
+  if (fanStatus == ON) {
+    lcd.print("ON");
+  } else {
+    lcd.print("OFF");
+  }
 }

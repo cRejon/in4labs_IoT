@@ -33,12 +33,14 @@ BLECharacteristic temperatureCharac("2A21",  // standard 16-bit characteristic U
 BLECharacteristic humidityCharac("2A20",    // standard 16-bit characteristic UUID
     BLERead | BLENotify, 4); // remote clients will be able to get notifications if this characteristic changes
 
+long previousMillis = 0;                // last time the sensor was checked, in ms
+
 void setup() {
   if (!BLE.begin()) {                           // initialization of BLE communication
     while (1);
   }
 
-  BLE.setLocalName("DH22SensorTEST");               // set advertised local name of this peripheral
+  BLE.setLocalName("DHT22SensorTest");               // set advertised local name of this peripheral
   BLE.setAdvertisedService(sensorService);          // set service UUID for this peripheral
   sensorService.addCharacteristic(temperatureCharac); // add the temperature sensor characteristic to sensorService
   sensorService.addCharacteristic(humidityCharac);    // add the humidity sensor characteristic to sensorService
@@ -51,7 +53,6 @@ void setup() {
 }
 
 void loop() {
-  long previousMillis = 0;                // last time the sensor was checked, in ms
   
   BLEDevice central = BLE.central();      // wait for BLE central devices to connect
 

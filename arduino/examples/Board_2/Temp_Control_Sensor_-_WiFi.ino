@@ -78,10 +78,10 @@ void loop() {
           currentLine += c;             // add it to the end of the currentLine
         } 
         
-        if (currentLine.endsWith("GET /Temperature")){      // client request for Temperature
+        if (currentLine.endsWith("GET /temperature")){      // client request for Temperature
           float temp = dht.readTemperature();               // read sensor Temperature
           sensorRead = String(temp, 2);                     // convert float to String
-        } else if (currentLine.endsWith("GET /Humidity")){  // client request for Humidity
+        } else if (currentLine.endsWith("GET /humidity")){  // client request for Humidity
           float hum = dht.readHumidity();                   // read sensor Humidity
           sensorRead = String(hum, 2);                      // convert float to String
         }

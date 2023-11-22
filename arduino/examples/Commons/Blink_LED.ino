@@ -9,7 +9,7 @@
   Circuit:
     - RGB LED connected to pins 5 (red), 6 (green) and 9 (blue)
 
-  Because this circuit uses a common anode RGB LED, the common leg is connected to the low voltage level
+  Because this circuit uses a common catode RGB LED, the common leg is connected to the low voltage level
   and pins colors will be ON when they are set to HIGH voltage level, and OFF when they are set to LOW.
 */
 

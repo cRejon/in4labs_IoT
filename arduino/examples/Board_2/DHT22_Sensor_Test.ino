@@ -36,7 +36,7 @@ void loop() {
   Serial.print(" %\t");
   Serial.print("Temperature: ");  // print the temperature value to serial
   Serial.print(temp);
-  Serial.println(" *C ");
+  Serial.println(" C ");
   
   delay(2000);                    // wait 2 seconds before reading again  
 }

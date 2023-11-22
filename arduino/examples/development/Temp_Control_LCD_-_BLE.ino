@@ -62,7 +62,7 @@ void loop() {
   
     if (peripheral.discoverService("181F")) {  // connecting to sensor service
       // retrieve the temperature characteristic
-      char tempChar [5];        
+      char tempChar [5] = {0};      
       tempCharacteristic = peripheral.characteristic("2A21"); 
       tempCharacteristic.readValue(tempChar, 4); // read temperature into char array
       for (int i = 0; i < 4; i++){                          // transfer char array into String
@@ -70,7 +70,7 @@ void loop() {
       }
       delay(100); 
       // retrieve the humidity characteristic
-      char humChar [5];
+      char humChar [5] = {0};
       humCharacteristic = peripheral.characteristic("2A20");
       humCharacteristic.readValue(humChar, 4); // read humidity into char array
       for (int i = 0; i < 4; i++){                          // transfer char array into String

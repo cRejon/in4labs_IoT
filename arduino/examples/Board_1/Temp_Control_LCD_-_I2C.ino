@@ -23,16 +23,19 @@
 #include <LiquidCrystal.h>      // include LCD library
 
 #define TEMP_LIMIT 50.0    // if this threshold is reached - instruct fan on 
-#define HUM_LIMIT 80.0     // if this threshold is reached - instruct fan on  
+#define ON 0x01            // value to write to BLE fan device to turn it on
+#define OFF 0x00           // value to write to BLE fan device to turn it off
+
+byte fanStatus = OFF;           // fan status
+byte previousFanStatus = OFF;   // previous fan status
+char tempRead[5];               // char array to hold temperature reading
+char humRead[5];                // char array to hold humidity reading
 
 // initialize the library by associating any needed LCD interface pin
 // with the arduino pin number it is connected to
 const int rs = 17, en = 16, d4 = 15, d5 = 14, d6 = 4, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
-String fanStatus = "OFF";             // fan status to be printed by LCD screen
-String temperatureRead;               // make a String to hold data received from the sensor
-String humidityRead;                  // make a String to hold data received from the sensor
 
 void setup() {
   Wire.begin();               // join i2c bus as master. no address required
@@ -41,12 +44,7 @@ void setup() {
   lcd.clear();   
 }
 
-void loop() {
-  float temperatureFloat;     // make a float to convert String data and compare to TEMP_LIMIT
-  float humidityFloat;        // make a float to convert String data and compare to HUM_LIMIT
-  temperatureRead = "";       // clear data for new reading
-  humidityRead = "";          // clear data for new reading 
-  
+void loop() {  
   char sensorChar[9] = {0,0,0,0,0,0,0,0,0}; // clear chart array for incoming data from sensor
 
   // obtain sensor reading
@@ -63,34 +61,29 @@ void loop() {
   }
 
   for (int i = 0; i < 4; i++){        // parse temperature reading (first 4 bytes, xx.x)
-    temperatureRead += sensorChar[i]; 
+    tempRead[i] = sensorChar[i];
   }
 
-  for (int i = 4; i < 8; i++){       // parse humidity reading (last 4 bytes, yy.y)
-    humidityRead += sensorChar[i]; 
+  for (int i = 4; i < 8; i++){        // parse humidity reading (last 4 bytes, yy.y)
+    humRead[i-4] = sensorChar[i]; 
   }
-  
-  updateLCD();                        // dispaly sensor readings in LCD screen
 
-  temperatureFloat = temperatureRead.toFloat(); // convert String data and compare to TEMP_LIMIT
-  humidityFloat = humidityRead.toFloat();       // convert String data and compare to HUM_LIMIT
-  
-  if (humidityFloat > HUM_LIMIT || temperatureFloat > TEMP_LIMIT){  // if any threshold is reached                             
+  // convert tempRead to float and compare to TEMP_LIMIT
+  float temperatureFloat = atof(tempRead);  // convert char array to float
+  if (temperatureFloat > TEMP_LIMIT){  // if the threshold is reached 
+    fanStatus = ON;           // activate fan
+  } else {
+    fanStatus = OFF;          
+  }  
+
+  if (fanStatus != previousFanStatus){  // if fan status has changed
     Wire.beginTransmission(2);    // transmission to slave device #2 (fan)
-    Wire.write(0x01);             // byte = 1; fan on
+    Wire.write(fanStatus);        // write fan status
     Wire.endTransmission(2);      // end transmission to slave device #2 (fan)
-
-    fanStatus = "ON";             // update fan status to be printed by LCD screen
-
-  } else {                        // if no threshold is reached
-    Wire.beginTransmission(2);    // transmission to slave device #2 (fan)
-    Wire.write(0x00);             // byte = 0; fan off
-    Wire.endTransmission(2);      // end transmission to slave device #2 (fan)
-    
-    fanStatus = "OFF";            // update fan status to be printed by LCD screen
+    previousFanStatus = fanStatus;  // update previous fan status
   }
   
-  updateLCD();                    // dispaly new fan status in LCD screen
+  updateLCD();                    // update LCD screen with new sensor readings and fan status
   
   delay(2000);                    // wait 2 seconds before requesting new reading. Sensor sampling rate is 0.5Hz 
 }
@@ -124,6 +117,10 @@ void updateLCD() {
   lcd.setCursor(12, 0);
   lcd.print("Fan");
   lcd.setCursor(12, 1);
-  lcd.print(fanStatus);
+  if (fanStatus == ON) {
+    lcd.print("ON");
+  } else {
+    lcd.print("OFF");
+  }
 }
 

@@ -6,12 +6,12 @@
   on for a set delay time, then off repeatedly, from a peripheral with the 
   'Slave Blink - BLE' example loaded.
 
-  The default blink time is 3 seconds.
+  The default blink time is 2 seconds.
 */
 
 #include <ArduinoBLE.h>
 
-#define BLINK_DELAY 3000          // time in ms that the LED is on/off
+#define BLINK_DELAY 2000          // time in ms that the LED is on/off
 
 void setup() {
   Serial.begin(9600);
@@ -84,8 +84,10 @@ void controlLed(BLEDevice peripheral) {
 
   while (peripheral.connected()) {      // while the peripheral is connected
     ledCharacteristic.writeValue(0x01); // Turn LED on
+    Serial.println("LED ON");
     delay(BLINK_DELAY);                 // wait for set delay time 
     ledCharacteristic.writeValue(0x00); // Turn LED off
+    Serial.println("LED OFF");
     delay(BLINK_DELAY);                 // wait for set delay time
   }
 

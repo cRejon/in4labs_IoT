@@ -32,11 +32,11 @@ void setup() {
     while (1);
   }
 
-  BLE.setLocalName("FAN");                              // set advertised local name of this peripheral
+  BLE.setLocalName("Arduino Fan");                              // set advertised local name of this peripheral
   BLE.setAdvertisedService(fanService);                 // set service UUID for this peripheral
   fanService.addCharacteristic(switchCharacteristic);   // add the switchCharacteristic to the fanService
   BLE.addService(fanService);                           // add fanService to this peripheral
-  switchCharacteristic.writeValue(0);   // set the initial value for the characeristic switchCharacteristic
+  switchCharacteristic.writeValue(0x00);   // set the initial value for the characeristic switchCharacteristic
   BLE.advertise();                      // start advertising this BLE peripheral to remote central devices
 
   pinMode(FAN_PIN, OUTPUT);               // set the FAN pin as an output
@@ -51,10 +51,10 @@ void loop() {                   // wait for BLE central devices to connect
     while (central.connected()) {       // while the central is still connected to fan peripheral
       if (switchCharacteristic.written()) {   // if the remote device wrote to the characteristic,
                                               // use the new characteristic value to control the FAN
-        if (switchCharacteristic.value()) {   // any value other than 0
-          digitalWrite(FAN_PIN, LOW);         // will turn the FAN on
-        } else {                              // a 0 value
-          digitalWrite(FAN_PIN, HIGH);        // will turn the FAN off
+        if (switchCharacteristic.value()) {   // any value other than 0x00 will turn the FAN on
+          digitalWrite(FAN_PIN, LOW);         
+        } else {                              // a 0x00 value will turn the FAN off
+          digitalWrite(FAN_PIN, HIGH);        
         }
       }
     }
