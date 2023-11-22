@@ -196,11 +196,16 @@ def monitor():
     command = f'arduino-cli monitor -p /dev/{usb_interface} --quiet --config baudrate={baudrate}'
     # NOTE: pexpect is used because arduino-cli monitor expects to run in an interactive 
     #       terminal environment and subprocess.run() does not work properly.
+    child = pexpect.spawn(command)
+    
     try:
-        child = pexpect.spawn(command, timeout=seconds)
-        output = child.read().decode('utf-8')
+        child.expect(pexpect.EOF, timeout=seconds)
     except pexpect.TIMEOUT:
-        output = child.before.decode('utf-8')
+        pass
+
+    output = child.before.decode('utf-8')
+    
+    child.close()
         
     resp = jsonify(board=board, output=output)
     return resp
