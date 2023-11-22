@@ -1,5 +1,6 @@
 import os
 import subprocess
+import time
 
 import pexpect
 import requests
@@ -145,6 +146,12 @@ def execute():
     board = request.form['board']
     target = request.form['target']
 
+    load_sketch(board, target)
+
+    resp = jsonify(board=board)
+    return resp
+
+def load_sketch(board, target):
     if (target == 'user'): 
         input_file = os.path.join(app.instance_path, 'compilations', board, 'build','temp_sketch.ino.hex')
     else: # target == 'stop'
@@ -175,8 +182,7 @@ def execute():
 
     result = subprocess.run(command, capture_output=True, text=True) 
     print(result) # Debug info
-    resp = jsonify(board=board)
-    return resp
+
 
 @app.route('/monitor', methods=['GET'])
 @login_required
@@ -213,3 +219,19 @@ def suggest():
 
     resp = jsonify(board=board, suggestion=suggestion)
     return resp
+
+@app.route('/reset_lab', methods=['GET'])
+@login_required
+def reset():
+    # Uhubctl is used to power on/off the USB ports of the Raspberry Pi
+    command = ['uhubctl', '-a', 'cycle', '-l', '1-1', '-d', '2']
+    result = subprocess.run(command, capture_output=True, text=True)
+    # Load the stop code in all the boards
+    time.sleep(1)
+    for board in boards:
+        print('Loading stop code in ' + board)
+        load_sketch(board, 'stop')
+    # Return the output of the command for debugging purposes
+    resp = jsonify(result=result.stdout)
+    return resp
+

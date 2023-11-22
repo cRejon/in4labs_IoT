@@ -206,6 +206,27 @@ function onStopExecution(board) {
     $('#button-monitor-'+board).prop('disabled', true);
 }
 
+/**
+ * Function that is triggered when the user wants to reset the lab
+ */
+function onResetLab() {
+
+    // Send the instruction through an Ajax Post
+    $.ajax({
+        type: "GET",
+        url: "reset_lab",
+        success: resetLabFeedback,
+        error: ajaxError
+    });
+
+    $('button.execute').prop('disabled',true);
+    $('button.monitor').prop('disabled',true);
+    $('button.stop').prop('disabled',true);
+
+    // Display loader animation
+    let loader = $('#loader-bg');
+    loader.show();
+}
 
 /**
  * Function that is executed once a compilation process has been performed in the back-end.
@@ -305,6 +326,21 @@ function suggestionFeedback(response) {
         $('#modal_message pre').remove();
         $('#modal_dialog').removeClass('modal-xl');
     })
+}
+
+/**
+ * Function that is executed once a reset lab process has been performed in the back-end.
+ *
+ * @param response, contains the board used and the serial monitor result.
+ */
+function resetLabFeedback(response) {
+
+    // Hide loader animation
+    let loader = $('#loader-bg');
+    loader.hide();
+
+    $('#modal_message').modal('show');
+    $('#modal-msg').text(messages.RESET_LAB);
 }
 
 /**
