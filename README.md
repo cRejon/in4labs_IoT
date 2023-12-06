@@ -78,7 +78,7 @@ $ docker run hello-world
 ```
 ### Python packages
 ```
-$ pip install docker
+$ sudo apt install -y python3-docker
 ```
 ## Running
 Execute the **_test.py_** file inside _test folder_ and go in your browser to the given url.  
