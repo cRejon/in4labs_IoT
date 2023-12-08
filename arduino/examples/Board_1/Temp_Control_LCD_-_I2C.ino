@@ -96,14 +96,14 @@ void updateLCD() {
   lcd.setCursor(1, 0);
   lcd.print("T:");
   lcd.setCursor(3, 0);
-  lcd.print(temperatureRead);
+  lcd.print(tempRead);
   lcd.setCursor(7, 0);
   lcd.print(" C");
   
   lcd.setCursor(1, 1);
   lcd.print("H:");
   lcd.setCursor(3, 1);
-  lcd.print(humidityRead);
+  lcd.print(humRead);
   lcd.setCursor(7, 1);
   lcd.print(" %");
  
