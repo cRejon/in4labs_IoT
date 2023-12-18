@@ -19,8 +19,8 @@
 #include <LiquidCrystal.h>      // include LCD library
 
 #define TEMP_LIMIT 50.0    // if this threshold is reached - instruct fan on 
-#define ON 0x01            // value to write to BLE fan device to turn it on
-#define OFF 0x00           // value to write to BLE fan device to turn it off
+#define ON 0x01            // value to write to fan device to turn it on
+#define OFF 0x00           // value to write to fan device to turn it off
 
 byte fanStatus = OFF;           // fan status
 byte previousFanStatus = OFF;   // previous fan status
@@ -96,36 +96,24 @@ void loop() {
 
 // function that updates sensor readings and fan status in LCD screen
 void updateLCD() {
-  // clear LCD screen
-  lcd.clear();  
-  // sensor readings
+  lcd.clear();
   lcd.setCursor(1, 0);
   lcd.print("T:");
-  lcd.setCursor(3, 0);
   lcd.print(tempRead);
-  lcd.setCursor(7, 0);
   lcd.print(" C");
-  
+
   lcd.setCursor(1, 1);
   lcd.print("H:");
-  lcd.setCursor(3, 1);
   lcd.print(humRead);
-  lcd.setCursor(7, 1);
   lcd.print(" %");
- 
-  // separation line
+
   lcd.setCursor(10, 0);
   lcd.print("|"); 
   lcd.setCursor(10, 1);
   lcd.print("|"); 
  
-  // fan status
   lcd.setCursor(12, 0);
   lcd.print("Fan");
   lcd.setCursor(12, 1);
-  if (fanStatus == ON) {
-    lcd.print("ON");
-  } else {
-    lcd.print("OFF");
-  }
+  lcd.print(fanStatus == ON ? "ON" : "OFF");
 }
