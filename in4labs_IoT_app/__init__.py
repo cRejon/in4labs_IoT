@@ -7,7 +7,7 @@ import requests
 from flask import Flask, render_template, url_for, jsonify, redirect, send_file, flash, request
 from flask_login import LoginManager, UserMixin, login_required, current_user, login_user
 
-from .utils import get_usb_config, create_editor, create_navtab
+from .utils import get_serial_number, get_usb_driver, create_editor, create_navtab
 
 
 # Flask environment variable needed for session management
@@ -46,7 +46,7 @@ boards = {
     }
 }
 
-boards = get_usb_config(boards) # Get the serial number and driver of the boards
+boards = get_serial_number(boards) # Get the serial number of the boards
 
 app = Flask(__name__, instance_path=os.path.join(os.getcwd(), 'arduino'))
 app.config.from_mapping(flask_config)
@@ -187,13 +187,16 @@ def load_sketch(board, target):
 @app.route('/monitor', methods=['GET'])
 @login_required
 def monitor():
+    global boards
+    boards = get_usb_driver(boards) # Get the drivers of the boards
+    
     board = request.args.get('board')
     baudrate = request.args.get('baudrate', default=9600, type=int)
     seconds = request.args.get('seconds', default=10, type=int)
 
-    usb_interface = boards[board]['usb_interface']
+    usb_driver = boards[board]['usb_driver']
 
-    command = f'arduino-cli monitor -p /dev/{usb_interface} --quiet --config baudrate={baudrate}'
+    command = f'arduino-cli monitor -p /dev/{usb_driver} --quiet --config baudrate={baudrate}'
     # NOTE: pexpect is used because arduino-cli monitor expects to run in an interactive 
     #       terminal environment and subprocess.run() does not work properly.
     child = pexpect.spawn(command)

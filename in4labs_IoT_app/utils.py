@@ -5,27 +5,32 @@ import re
 from flask import current_app
 
 
-def get_usb_config(boards):
+def get_serial_number(boards):
     result = subprocess.run(['dmesg'], capture_output=True, text=True)
     dmesg_output = result.stdout
 
-    pattern_usb_interface = r'1-1.(\d).*?(tty\w\w\w\d)'
-    pattern_serial_number = r'1-1.(\d): SerialNumber:\s(.*?)\n'
-    matches_interface = re.findall(pattern_usb_interface, dmesg_output)
-    matches_serial_number = re.findall(pattern_serial_number, dmesg_output)
-
-    matches = []
-    for match_interface in matches_interface:
-        for match_serial_number in matches_serial_number:
-            if match_interface[0] == match_serial_number[0]:
-                matches.append(match_interface + match_serial_number[1:])
-                break
+    pattern = r'1-1.(\d): SerialNumber:\s(.*?)\n'
+    matches = re.findall(pattern, dmesg_output)
 
     for match in matches:
         for board in boards.values():
             if board['usb_port'] == match[0]:
-                board['usb_interface'] = match[1]
-                board['serial_number'] = match[2]
+                board['serial_number'] = match[1]
+                break
+
+    return boards
+
+def get_usb_driver(boards):
+    result = subprocess.run(['dmesg'], capture_output=True, text=True)
+    dmesg_output = result.stdout
+
+    pattern = r'1-1.(\d).*?(tty\w\w\w\d)'
+    matches = re.findall(pattern, dmesg_output)
+
+    for match in matches:
+        for board in boards.values():
+            if board['usb_port'] == match[0]:
+                board['usb_driver'] = match[1]
                 break
 
     return boards
