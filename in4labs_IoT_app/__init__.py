@@ -219,10 +219,10 @@ def suggest():
     board = request.form['board']
     code = request.form['text']
 
-    params = {'action': '16', 'text': code}
+    data = {'action': '16', 'text': code}
     url = 'https://open.ieec.uned.es/v_innovacion/api.php'
 
-    r = requests.get(url, params=params)
+    r = requests.post(url, data=data)
     suggestion = r.text
 
     resp = jsonify(board=board, suggestion=suggestion)
