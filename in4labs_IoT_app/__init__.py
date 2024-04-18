@@ -26,22 +26,24 @@ boards = {
     'Board_1':{
         'name':'LCD',
         'role':'Master',
-        'model':'Arduino Uno WiFi Rev2',
-        'fqbn':'arduino:megaavr:uno2018',
+        #'model':'Arduino Uno WiFi Rev2',
+        #'fqbn':'arduino:megaavr:uno2018',
+        'model':'Arduino Nano ESP32',
+        'fqbn':'arduino:esp32:nano_nora',
         'usb_port':'2',
     },
     'Board_2':{
         'name':'Sensor',
         'role':'Slave',
-        'model':'Arduino Uno WiFi Rev2',
-        'fqbn':'arduino:megaavr:uno2018',
+        'model':'Arduino Nano ESP32',
+        'fqbn':'arduino:esp32:nano_nora',
         'usb_port':'1',
     },
     'Board_3':{
         'name':'Fan',
         'role':'Slave',
-        'model':'Arduino Uno WiFi Rev2',
-        'fqbn':'arduino:megaavr:uno2018',
+        'model':'Arduino Nano ESP32',
+        'fqbn':'arduino:esp32:nano_nora',
         'usb_port':'3',
     }
 }
@@ -153,36 +155,44 @@ def execute():
 
 def load_sketch(board, target):
     if (target == 'user'): 
-        input_file = os.path.join(app.instance_path, 'compilations', board, 'build','temp_sketch.ino.hex')
+        input_file_path = os.path.join(app.instance_path, 'compilations', board, 'build')
     else: # target == 'stop'
         input_file = os.path.join(app.instance_path, 'compilations', 'precompiled','stop.ino.hex')
 
-    # NOTE: Arduino-cli uses AVRdude to upload the code and it does not work properly if -Pusb flag is used with 
-    #       the usb interface of the board, so we use the last two digits of the serial number instead.
-    serial_number = boards[board]['serial_number'][-2:]
+    if boards[board]['model'] == 'Arduino Nano ESP32':
+        dfu_util = os.path.join('/', 'root', '.arduino15', 'packages', 'arduino',
+                                    'tools', 'dfu-util', '0.11.0-arduino5', 'dfu-util')
+        serial_number = boards[board]['serial_number']
+        input_file = os.path.join(input_file_path, 'temp_sketch.ino.bin')
+        
+        command = [dfu_util, '--serial', serial_number, '-D', input_file, '-Q']
 
-    avrdude_path = os.path.join('/', 'root', '.arduino15', 'packages', 'arduino',
-                                 'tools', 'avrdude', '6.3.0-arduino17', 'bin', 'avrdude')
-    avrdude_conf_path = os.path.join('/', 'root', '.arduino15', 'packages', 'arduino', 
-                                     'tools', 'avrdude', '6.3.0-arduino17', 'etc', 'avrdude.conf')
-    avrdude_partno = 'atmega4809'
-    avrdude_programer_id = 'xplainedmini_updi'
-    avrdude_usb_port = '-Pusb:'+ serial_number
-    avrdude_baudrate = '115200'
-    avrdude_sketch =  '-Uflash:w:'+ input_file +':i'
-    avrdude_fuse_2 = '-Ufuse2:w:0x01:m'
-    avrdude_fuse_5 = '-Ufuse5:w:0xC9:m'
-    avrdude_fuse_8 = '-Ufuse8:w:0x02:m'
-    avrdude_boot = os.path.join('/', 'root', '.arduino15', 'packages', 'arduino',
-                                 'hardware', 'megaavr', '1.8.8', 'bootloaders', 'atmega4809_uart_bl.hex:i')
+    elif boards[board]['model'] == 'Arduino Uno WiFi Rev2':
+        # NOTE: Arduino-cli uses AVRdude to upload the code and it does not work properly if -Pusb flag is used with 
+        #       the usb interface of the board, so we use the last two digits of the serial number instead.
+        serial_number = boards[board]['serial_number'][-2:]
+        input_file = os.path.join(input_file_path, 'temp_sketch.ino.hex')
+        avrdude_path = os.path.join('/', 'root', '.arduino15', 'packages', 'arduino',
+                                    'tools', 'avrdude', '6.3.0-arduino17', 'bin', 'avrdude')
+        avrdude_conf_path = os.path.join('/', 'root', '.arduino15', 'packages', 'arduino', 
+                                        'tools', 'avrdude', '6.3.0-arduino17', 'etc', 'avrdude.conf')
+        avrdude_partno = 'atmega4809'
+        avrdude_programer_id = 'xplainedmini_updi'
+        avrdude_usb_port = '-Pusb:'+ serial_number
+        avrdude_baudrate = '115200'
+        avrdude_sketch =  '-Uflash:w:'+ input_file +':i'
+        avrdude_fuse_2 = '-Ufuse2:w:0x01:m'
+        avrdude_fuse_5 = '-Ufuse5:w:0xC9:m'
+        avrdude_fuse_8 = '-Ufuse8:w:0x02:m'
+        avrdude_boot = os.path.join('/', 'root', '.arduino15', 'packages', 'arduino',
+                                    'hardware', 'megaavr', '1.8.8', 'bootloaders', 'atmega4809_uart_bl.hex:i')
 
-    command = [avrdude_path, '-C', avrdude_conf_path, '-V', '-p', avrdude_partno, '-c', avrdude_programer_id, 
-               avrdude_usb_port, '-b', avrdude_baudrate, '-e', '-D', avrdude_sketch, avrdude_fuse_2, 
-               avrdude_fuse_5, avrdude_fuse_8, avrdude_boot]
+        command = [avrdude_path, '-C', avrdude_conf_path, '-V', '-p', avrdude_partno, '-c', avrdude_programer_id, 
+                avrdude_usb_port, '-b', avrdude_baudrate, '-e', '-D', avrdude_sketch, avrdude_fuse_2, 
+                avrdude_fuse_5, avrdude_fuse_8, avrdude_boot]
 
     result = subprocess.run(command, capture_output=True, text=True) 
     print(result) # Debug info
-
 
 @app.route('/monitor', methods=['GET'])
 @login_required
