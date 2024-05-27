@@ -154,24 +154,27 @@ def execute():
     return resp
 
 def load_sketch(board, target):
-    if (target == 'user'): 
-        input_file_path = os.path.join(app.instance_path, 'compilations', board, 'build')
-    else: # target == 'stop'
-        input_file = os.path.join(app.instance_path, 'compilations', 'precompiled','stop.ino.hex')
-
     if boards[board]['model'] == 'Arduino Nano ESP32':
+        if (target == 'user'): 
+            input_file = os.path.join(app.instance_path, 'compilations', board, 'build', 'temp_sketch.ino.bin')
+        else: # target == 'stop'
+            input_file = os.path.join(app.instance_path, 'compilations', 'precompiled','stop.ino.bin')
+
         dfu_util = os.path.join('/', 'root', '.arduino15', 'packages', 'arduino',
                                     'tools', 'dfu-util', '0.11.0-arduino5', 'dfu-util')
         serial_number = boards[board]['serial_number']
-        input_file = os.path.join(input_file_path, 'temp_sketch.ino.bin')
-        
+
         command = [dfu_util, '--serial', serial_number, '-D', input_file, '-Q']
 
     elif boards[board]['model'] == 'Arduino Uno WiFi Rev2':
         # NOTE: Arduino-cli uses AVRdude to upload the code and it does not work properly if -Pusb flag is used with 
         #       the usb interface of the board, so we use the last two digits of the serial number instead.
+        if (target == 'user'): 
+            input_file = os.path.join(app.instance_path, 'compilations', board, 'build', 'temp_sketch.ino.hex')
+        else: # target == 'stop'
+            input_file = os.path.join(app.instance_path, 'compilations', 'precompiled','stop.ino.hex')
+
         serial_number = boards[board]['serial_number'][-2:]
-        input_file = os.path.join(input_file_path, 'temp_sketch.ino.hex')
         avrdude_path = os.path.join('/', 'root', '.arduino15', 'packages', 'arduino',
                                     'tools', 'avrdude', '6.3.0-arduino17', 'bin', 'avrdude')
         avrdude_conf_path = os.path.join('/', 'root', '.arduino15', 'packages', 'arduino', 
