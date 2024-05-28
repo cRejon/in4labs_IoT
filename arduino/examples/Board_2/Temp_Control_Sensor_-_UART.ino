@@ -23,8 +23,8 @@
 DHT dht = DHT(DHT22_PIN, DHTType);    // instantiate the dht class with our data pin and DHT type.
 
 void setup() {
-  Serial1.begin(115200);      // initialize serial and wait for port to open:
-  while (!Serial1) {
+  Serial0.begin(115200);      // initialize serial and wait for port to open:
+  while (!Serial0) {
     ;                         // Serial used for communication with other boards
   }
 
@@ -47,13 +47,13 @@ void loop() {
     previousMillis=currentMillis;             // reset previousMillis
   }
 
-  if(Serial1.available()){              // run code only if data received from master
+  if(Serial0.available()){              // run code only if data received from master
 
     delay(1);                           // allow time for message to be received in full
     
     String masterRequest = "";          // accumulate char bytes of data from master in String
-    while (Serial1.available()){          
-      char c = Serial1.read();
+    while (Serial0.available()){          
+      char c = Serial0.read();
       masterRequest += c;
     }
 
@@ -62,12 +62,12 @@ void loop() {
     if (masterRequest == "temperature"){          // if request for temperature
       String temperatureRead = String(temperature, 1);  // convert data to String
       temperatureRead.toCharArray(sensorChar, 5);  // String sensor reading to char array
-      Serial1.write(sensorChar, 4);                // send char array to master
+      Serial0.write(sensorChar, 4);                // send char array to master
 
     } else if (masterRequest == "humidity"){      // if request for humidity
       String humidityRead = String(humidity, 1);  // convert data to String
       humidityRead.toCharArray(sensorChar, 5);     // String sensor reading to char array
-      Serial1.write(sensorChar, 4);                // send char array to master
+      Serial0.write(sensorChar, 4);                // send char array to master
     }
   }
 }

@@ -33,8 +33,8 @@ const int rs = 17, en = 16, d4 = 15, d5 = 14, d6 = 4, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 void setup() {
-  Serial1.begin(115200);      // initialize serial and wait for port to open:
-  while (!Serial1) {
+  Serial0.begin(115200);      // initialize serial and wait for port to open:
+  while (!Serial0) {
     ;                         // Serial used for communication with other boards
   }
 
@@ -44,12 +44,12 @@ void setup() {
 
 void loop() {
 
-  Serial1.write("temperature");       // send request to obtain temperature sensor reading
+  Serial0.write("temperature");       // send request to obtain temperature sensor reading
   delay(100);                         // leave time for transmision to be received and replied generated
   // save temperature reading in tempRead char array
   int i = 0;                          // counter for number of bytes received
-  while(Serial1.available()){         // slave may send less than requested
-      char c = Serial1.read();          // receive a byte as character
+  while(Serial0.available()){         // slave may send less than requested
+      char c = Serial0.read();          // receive a byte as character
       tempRead[i] =  c;                 // load received char into char array
       i++;
     if (i == 5){
@@ -57,12 +57,12 @@ void loop() {
     }
   }
 
-  Serial1.write("humidity");          // send request to obtain humidity sensor reading
+  Serial0.write("humidity");          // send request to obtain humidity sensor reading
   delay(100);                         // leave time for transmision to be received and replied generated
   // save humidity reading in humRead char array
   int j = 0;                          // counter for number of bytes received
-  while(Serial1.available()){         // slave may send less than requested
-      char c = Serial1.read();          // receive a byte as character
+  while(Serial0.available()){         // slave may send less than requested
+      char c = Serial0.read();          // receive a byte as character
       humRead[j] =  c;                  // load received char into char array
       j++;
       if (j == 5){
@@ -80,11 +80,11 @@ void loop() {
 
   if (fanStatus != previousFanStatus){ // if fan status has changed
     if (fanStatus == ON){                                      
-      Serial1.write("turnFanOn");       // send instruction to slaves to turn fan on
-      Serial1.flush();
+      Serial0.write("turnFanOn");       // send instruction to slaves to turn fan on
+      Serial0.flush();
     } else {                         
-      Serial1.write("turnFanOff");      // send instruction to slaves to turn fan off
-      Serial1.flush();
+      Serial0.write("turnFanOff");      // send instruction to slaves to turn fan off
+      Serial0.flush();
     }
     previousFanStatus = fanStatus;      // update previous fan status
   }

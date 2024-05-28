@@ -21,8 +21,8 @@
 #define FAN_PIN 2             // define the pin connected to Relay
 
 void setup() {
-  Serial1.begin(115200);      // initialize serial and wait for port to open:
-  while (!Serial1) {
+  Serial0.begin(115200);      // initialize serial and wait for port to open:
+  while (!Serial0) {
     ;                         // Serial used for communication with other boards
   }
 
@@ -30,25 +30,25 @@ void setup() {
                     // data sent from 'Temp Control Sensor - UART', because they share the same bus
 
   pinMode(FAN_PIN, OUTPUT);         // set the FAN pin as output
-  digitalWrite(FAN_PIN, HIGH);      // fan off
+  digitalWrite(FAN_PIN, LOW);      // fan off
 }
 
 void loop() {
   
-  if(Serial1.available()){              // run code only if data received from master
+  if(Serial0.available()){              // run code only if data received from master
     
     delay(1);                           // allow time for message to be received in full
     
     String masterRequest = "";          // accumulate char bytes of data from master in String
-    while (Serial1.available()){          
-      char c = Serial1.read();
+    while (Serial0.available()){          
+      char c = Serial0.read();
       masterRequest += c;
     }
 
     if (masterRequest == "turnFanOn"){
-      digitalWrite(FAN_PIN, LOW);               // turn the FAN on
+      digitalWrite(FAN_PIN, HIGH);               // turn the FAN on
     } else if (masterRequest == "turnFanOff"){
-      digitalWrite(FAN_PIN, HIGH);              // turn the FAN off
+      digitalWrite(FAN_PIN, LOW);              // turn the FAN off
     }
   }
 }
