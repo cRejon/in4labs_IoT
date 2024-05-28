@@ -11,8 +11,8 @@
     - Relay COM (common) to ground
     - Pin 2 connected to Relay Signal pin
      
-  When pin 2 is set to HIGH voltage the relay will open and the fan will turn OFF.
-  When pin 2 is set to LOW voltage the relay will close and the fan will turn ON.
+  When pin 2 is set to LOW voltage the relay will open and the fan will turn OFF.
+  When pin 2 is set to HIGH voltage the relay will close and the fan will turn ON.
 
 */
 
@@ -26,8 +26,8 @@ void setup() {
 
 // the loop function runs over and over again forever
 void loop() {
-  digitalWrite(FAN_PIN, HIGH);     // turn the fan off
+  digitalWrite(FAN_PIN, LOW);     // turn the fan off
   delay(BLINK_DELAY);              // wait for a second
-  digitalWrite(FAN_PIN, LOW);      // turn the fan on
+  digitalWrite(FAN_PIN, HIGH);      // turn the fan on
   delay(BLINK_DELAY);              // wait for a second
 }

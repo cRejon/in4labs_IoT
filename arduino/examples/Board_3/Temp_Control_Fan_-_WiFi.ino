@@ -42,7 +42,7 @@ void setup() {
   server.begin();                         // start the web server on port 80
 
   pinMode(FAN_PIN, OUTPUT);               // set the FAN pin as an output
-  digitalWrite(FAN_PIN, HIGH);            // fan off
+  digitalWrite(FAN_PIN, LOW);            // fan off
 }
 
 void loop() {
@@ -67,9 +67,9 @@ void loop() {
         } 
         
         if (currentLine.endsWith("GET /H")){        // client request to turn fan on
-          digitalWrite(FAN_PIN, LOW);               // turn the FAN on
+          digitalWrite(FAN_PIN, HIGH);               // turn the FAN on
         } else if (currentLine.endsWith("GET /L")){ // client request to turn fan off
-          digitalWrite(FAN_PIN, HIGH);              // turn the FAN off
+          digitalWrite(FAN_PIN, LOW);              // turn the FAN off
         }
       }
     }

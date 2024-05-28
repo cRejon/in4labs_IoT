@@ -30,7 +30,7 @@ void setup() {
   Wire.onReceive(receiveEvent);     // if data received via I2C bus, run receiveEvent function
 
   pinMode(FAN_PIN, OUTPUT);         // set the FAN pin as output
-  digitalWrite(FAN_PIN, HIGH);      // fan off
+  digitalWrite(FAN_PIN, LOW);      // fan off
 }
 
 void loop() {
@@ -47,10 +47,10 @@ void receiveEvent(int numBytes){      // function run if data received from mast
 
   switch (c){                         // select case depending on byte sent by master
     case 0:
-      digitalWrite(FAN_PIN, HIGH);    // turn the FAN off   
+      digitalWrite(FAN_PIN, LOW);    // turn the FAN off   
     break;
     case 1:
-      digitalWrite(FAN_PIN, LOW);     // turn the FAN on 
+      digitalWrite(FAN_PIN, HIGH);     // turn the FAN on 
     break;
   }
 }
