@@ -30,7 +30,7 @@ String humRead;                // char array to hold humidity reading
 
 // initialize the library by associating any needed LCD interface pin
 // with the arduino pin number it is connected to
-const int rs = 17, en = 16, d4 = 15, d5 = 14, d6 = 4, d7 = 2;
+const int rs = 3, en = 4, d4 = 5, d5 = 6, d6 = 9, d7 = 10;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 // Details for Wifi network access point created by: Temp_Control_Sensor_-_Wifi
