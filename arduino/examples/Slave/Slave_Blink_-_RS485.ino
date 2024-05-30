@@ -9,11 +9,11 @@
     to the RS-485 module.
 
     Circuit:
-        - RGB LED connected to pins 5 (red), 6 (green) and 9 (blue)
+        - RGB LED connected to pins A0 (red), A1 (green) and A2 (blue)
         - HardwareSerial connected to RS-485 module
 */
 
-#define RGB_PIN_RED 5 
+#define RGB_PIN A0
 //SoftwareSerial pins
 #define TX_PIN 7                  
 #define RX_PIN 8  
@@ -21,8 +21,8 @@
 void setup() {
     Serial1.begin(9600, SERIAL_8N1, RX_PIN, TX_PIN);  // initialize serial port
 
-    pinMode(RGB_PIN_RED, OUTPUT);             // initialize digital pin RGB_PIN_RED as an output.
-    digitalWrite(RGB_PIN_RED, LOW);           // start with the LED off 
+    pinMode(RGB_PIN, OUTPUT);             // initialize digital pin RGB_PIN as an output.
+    digitalWrite(RGB_PIN, LOW);           // start with the LED off 
 }
 void loop() {
     if(Serial1.available()){                // run code only if data received from master
@@ -35,10 +35,10 @@ void loop() {
         }
 
         if (masterRequest == "turnLedOn"){
-            digitalWrite(RGB_PIN_RED, HIGH);       // turn the LED on 
+            digitalWrite(RGB_PIN, HIGH);       // turn the LED on 
         } else 
         if (masterRequest == "turnLedOff"){
-            digitalWrite(RGB_PIN_RED, LOW);        // turn the LED off
+            digitalWrite(RGB_PIN, LOW);        // turn the LED off
         }
     }
 }

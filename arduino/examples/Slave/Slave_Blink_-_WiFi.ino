@@ -11,12 +11,12 @@
   WEP or WPA, change the WiFi.begin() call accordingly.
 
   Circuit:
-    - RGB led connected to pins 5 (red), 6 (green) and 9 (blue)
+    - RGB led connected to pins A0 (red), A1 (green) and A2 (blue)
 */
 
 #include <WiFiNINA.h>
 
-#define RGB_PIN 5            
+#define RGB_PIN A0          
 
 // Details for Wifi network access point created by: Master Blink - WiFi
 char ssid[] = "WifiNINA-Access-Point";  // your network SSID (name)
