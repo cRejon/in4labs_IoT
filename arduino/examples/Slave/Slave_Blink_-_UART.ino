@@ -6,12 +6,12 @@
   a LED on for a set delay time, then off, repeatedly.
 
   Circuit:
-    - RGB LED connected to pins 5 (red), 6 (green) and 9 (blue)
+    - RGB LED connected to pins A0 (red), A1 (green) and A2 (blue)
     - RX (pin 0) connected to Master TX pin  
     - TX (pin 1) connected to Master RX pin  
 */
 
-#define RGB_PIN 5                
+#define RGB_PIN A0               
 
 void setup() {
   Serial1.begin(115200);           // initialize UART at 115200 bauds

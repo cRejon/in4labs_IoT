@@ -7,14 +7,14 @@
   Default delay time is 1 second.
   
   Circuit:
-    - RGB LED connected to pins 5 (red), 6 (green) and 9 (blue)
+    - RGB LED connected to pins A0 (red), A1 (green) and A2 (blue)
 
   Because this circuit uses a common catode RGB LED, the common leg is connected to the low voltage level
   and pins colors will be ON when they are set to HIGH voltage level, and OFF when they are set to LOW.
 */
 
 // definitions:
-#define RGB_PIN 5               // 5 red, 6 green and 9 blue.
+#define RGB_PIN A0              // pin where the RGB LED is connected               
 #define BLINK_DELAY 1000        // time in ms that the led is on/off
 
 // the setup function runs once when the code is loaded

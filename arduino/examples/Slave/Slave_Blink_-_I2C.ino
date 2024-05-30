@@ -10,13 +10,13 @@
   and SDA (Serial Data). This slave is contacted by Master in address 2.
 
   Circuit:
-    - RGB LED connected to pins 5 (red), 6 (green) and 9 (blue)
+    - RGB LED connected to pins A0 (red), A1 (green) and A2 (blue)
     - SCL (Serial Clock) and SDA (Serial Data) to I2C bus
 */
 
 #include <Wire.h> // include I2C library
 
-#define RGB_PIN 5                   
+#define RGB_PIN A0                  
 
 
 void setup() {

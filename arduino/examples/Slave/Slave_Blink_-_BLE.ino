@@ -7,12 +7,12 @@
   for a set delay time, then off, repeatedly.
 
   Circuit:
-    - RGB LED connected to pins 5 (red), 6 (green) and 9 (blue)
+    - RGB LED connected to pins A0 (red), A1 (green) and A2 (blue)
 */
 
 #include <ArduinoBLE.h>
 
-#define RGB_PIN 5    
+#define RGB_PIN A0    
 
 // ID definitions for BLE communication:
 // ID for BLE Led Service
