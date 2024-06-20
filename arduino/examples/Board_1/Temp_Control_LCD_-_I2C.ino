@@ -23,13 +23,13 @@
 #include <LiquidCrystal.h>      // include LCD library
 
 #define TEMP_LIMIT 50.0    // if this threshold is reached - instruct fan on 
-#define ON 0x01            // value to write to fan device to turn it on
-#define OFF 0x00           // value to write to fan device to turn it off
+#define FAN_ON 0x01            // value to write to fan device to turn it on
+#define FAN_OFF 0x00           // value to write to fan device to turn it off
 
-byte fanStatus = OFF;           // fan status
-byte previousFanStatus = OFF;   // previous fan status
-char tempRead[5];               // char array to hold temperature reading
-char humRead[5];                // char array to hold humidity reading
+byte fanStatus = FAN_OFF;           // fan status
+byte previousFanStatus = FAN_OFF;   // previous fan status
+char temperatureReading[5];               // char array to hold temperature reading
+char humidityReading[5];                // char array to hold humidity reading
 
 // initialize the library by associating any needed LCD interface pin
 // with the arduino pin number it is connected to
@@ -61,19 +61,19 @@ void loop() {
   }
 
   for (int i = 0; i < 4; i++){        // parse temperature reading (first 4 bytes, xx.x)
-    tempRead[i] = sensorChar[i];
+    temperatureReading[i] = sensorChar[i];
   }
 
   for (int i = 4; i < 8; i++){        // parse humidity reading (last 4 bytes, yy.y)
-    humRead[i-4] = sensorChar[i]; 
+    humidityReading[i-4] = sensorChar[i]; 
   }
 
-  // convert tempRead to float and compare to TEMP_LIMIT
-  float temperatureFloat = atof(tempRead);  // convert char array to float
+  // convert temperatureReading to float and compare to TEMP_LIMIT
+  float temperatureFloat = atof(temperatureReading);  // convert char array to float
   if (temperatureFloat > TEMP_LIMIT){  // if the threshold is reached 
-    fanStatus = ON;           // activate fan
+    fanStatus = FAN_ON;           // activate fan
   } else {
-    fanStatus = OFF;          
+    fanStatus = FAN_OFF;          
   }  
 
   if (fanStatus != previousFanStatus){  // if fan status has changed
@@ -93,12 +93,12 @@ void updateLCD() {
   lcd.clear();
   lcd.setCursor(1, 0);
   lcd.print("T:");
-  lcd.print(tempRead);
+  lcd.print(temperatureReading);
   lcd.print(" C");
 
   lcd.setCursor(1, 1);
   lcd.print("H:");
-  lcd.print(humRead);
+  lcd.print(humidityReading);
   lcd.print(" %");
 
   lcd.setCursor(10, 0);
@@ -109,6 +109,6 @@ void updateLCD() {
   lcd.setCursor(12, 0);
   lcd.print("Fan");
   lcd.setCursor(12, 1);
-  lcd.print(fanStatus == ON ? "ON" : "OFF");
+  lcd.print(fanStatus == FAN_ON ? "ON" : "OFF");
 }
 

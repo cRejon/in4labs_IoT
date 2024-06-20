@@ -19,13 +19,13 @@
 #include <LiquidCrystal.h>      // include LCD library
 
 #define TEMP_LIMIT 50.0    // if this threshold is reached - instruct fan on 
-#define ON 0x01            // value to write to fan device to turn it on
-#define OFF 0x00           // value to write to fan device to turn it off
+#define FAN_ON 0x01            // value to write to fan device to turn it on
+#define FAN_OFF 0x00           // value to write to fan device to turn it off
 
-byte fanStatus = OFF;           // fan status
-byte previousFanStatus = OFF;   // previous fan status
-char tempRead[5];               // char array to hold temperature reading
-char humRead[5];                // char array to hold humidity reading
+byte fanStatus = FAN_OFF;           // fan status
+byte previousFanStatus = FAN_OFF;   // previous fan status
+char temperatureReading[5];               // char array to hold temperature reading
+char humidityReading[5];                // char array to hold humidity reading
 
 // initialize the library by associating any needed LCD interface pin
 // with the arduino pin number it is connected to
@@ -46,11 +46,11 @@ void loop() {
 
   Serial0.write("temperature");       // send request to obtain temperature sensor reading
   delay(100);                         // leave time for transmision to be received and replied generated
-  // save temperature reading in tempRead char array
+  // save temperature reading in temperatureReading char array
   int i = 0;                          // counter for number of bytes received
   while(Serial0.available()){         // slave may send less than requested
       char c = Serial0.read();          // receive a byte as character
-      tempRead[i] =  c;                 // load received char into char array
+      temperatureReading[i] =  c;                 // load received char into char array
       i++;
     if (i == 5){
       break;  
@@ -59,27 +59,27 @@ void loop() {
 
   Serial0.write("humidity");          // send request to obtain humidity sensor reading
   delay(100);                         // leave time for transmision to be received and replied generated
-  // save humidity reading in humRead char array
+  // save humidity reading in humidityReading char array
   int j = 0;                          // counter for number of bytes received
   while(Serial0.available()){         // slave may send less than requested
       char c = Serial0.read();          // receive a byte as character
-      humRead[j] =  c;                  // load received char into char array
+      humidityReading[j] =  c;                  // load received char into char array
       j++;
       if (j == 5){
           break;  
       }
   }  
 
-  // convert tempRead to float and compare to TEMP_LIMIT
-  float temperatureFloat = atof(tempRead);  // convert char array to float
+  // convert temperatureReading to float and compare to TEMP_LIMIT
+  float temperatureFloat = atof(temperatureReading);  // convert char array to float
   if (temperatureFloat > TEMP_LIMIT){  // if the threshold is reached 
-    fanStatus = ON;           // activate fan
+    fanStatus = FAN_ON;           // activate fan
   } else {
-    fanStatus = OFF;          
+    fanStatus = FAN_OFF;          
   }  
 
   if (fanStatus != previousFanStatus){ // if fan status has changed
-    if (fanStatus == ON){                                      
+    if (fanStatus == FAN_ON){                                      
       Serial0.write("turnFanOn");       // send instruction to slaves to turn fan on
       Serial0.flush();
     } else {                         
@@ -99,12 +99,12 @@ void updateLCD() {
   lcd.clear();
   lcd.setCursor(1, 0);
   lcd.print("T:");
-  lcd.print(tempRead);
+  lcd.print(temperatureReading);
   lcd.print(" C");
 
   lcd.setCursor(1, 1);
   lcd.print("H:");
-  lcd.print(humRead);
+  lcd.print(humidityReading);
   lcd.print(" %");
 
   lcd.setCursor(10, 0);
@@ -115,5 +115,5 @@ void updateLCD() {
   lcd.setCursor(12, 0);
   lcd.print("Fan");
   lcd.setCursor(12, 1);
-  lcd.print(fanStatus == ON ? "ON" : "OFF");
+  lcd.print(fanStatus == FAN_ON ? "ON" : "OFF");
 }
