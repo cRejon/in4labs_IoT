@@ -14,8 +14,8 @@
 #define RGB_PIN A0               
 
 void setup() {
-  Serial1.begin(115200);           // initialize UART at 115200 bauds
-  while (!Serial1) {
+  Serial0.begin(115200);           // initialize UART at 115200 bauds
+  while (!Serial0) {
     ;                              // Serial used for communication with other boards
   }
   
@@ -24,12 +24,12 @@ void setup() {
 }
 
 void loop() {
-  if(Serial1.available()){         // run code only if data received from Master
+  if(Serial0.available()){         // run code only if data received from Master
     delay(1);                      // allow time for message to be received in full
     
     String masterRequest = "";     // accumulate char bytes of data from Master in String
-    while (Serial1.available()){          
-      char c = Serial1.read();
+    while (Serial0.available()){          
+      char c = Serial0.read();
       masterRequest += c;
     }
 

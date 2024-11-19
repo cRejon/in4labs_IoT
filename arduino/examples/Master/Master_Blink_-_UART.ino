@@ -15,18 +15,19 @@
 #define BLINK_DELAY 1000        // time in ms that the led is on/off
 
 void setup() {
-  Serial1.begin(115200);        // initialize serial and wait for port to open:
-  while (!Serial1) {
+  Serial0.begin(115200);        // initialize serial and wait for port to open:
+  while (!Serial0) {
     ;                           // Serial used for communication with other boards
   }
+  Serial0.flush();
 }
 
 void loop() {
-  Serial1.write("turnLedOn");   // send instruction to slaves to turn led on
-  Serial1.flush();
+  Serial0.write("turnLedOn");   // send instruction to slaves to turn led on
+  Serial0.flush();
   delay(BLINK_DELAY);           // wait for set delay time 
     
-  Serial1.write("turnLedOff");  // send instruction to slaves to turn led off
-  Serial1.flush();
+  Serial0.write("turnLedOff");  // send instruction to slaves to turn led off
+  Serial0.flush();
   delay(BLINK_DELAY);           // wait for set delay time   
 }
