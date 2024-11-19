@@ -33,7 +33,7 @@ char humidityReading[5];                // char array to hold humidity reading
 
 // initialize the library by associating any needed LCD interface pin
 // with the arduino pin number it is connected to
-const int rs = 3, en = 4, d4 = 5, d5 = 6, d6 = 9, d7 = 10;s
+const int rs = 3, en = 4, d4 = 5, d5 = 6, d6 = 9, d7 = 10;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 
