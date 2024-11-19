@@ -30,12 +30,11 @@
 
 void setup() {
     Serial1.begin(9600, SERIAL_8N1, RX_PIN, TX_PIN);  // initialize serial port
-    delay(1000);          // wait for serial port to initialize
+    while (!Serial1) {
+      ;                         // wait for serial port to initialize
+    } 
     Serial1.flush();      // clear serial port buffer
    
-    pinMode(1, INPUT); // TX (data out) pin set as input. Default output mode will conflict with
-                    // data sent from 'Temp Control Sensor - UART', because they share the same bus
-
     pinMode(FAN_PIN, OUTPUT);               // set the FAN pin as an output
     digitalWrite(FAN_PIN, LOW);            // fan off
 }
@@ -44,7 +43,7 @@ void loop() {
   
   if(Serial1.available()){              // run code only if data received from master
     
-    delay(1);                           // allow time for message to be received in full
+    delay(10);                           // allow time for message to be received in full
     
     String masterRequest = "";          // accumulate char bytes of data from master in String
     while (Serial1.available()){          

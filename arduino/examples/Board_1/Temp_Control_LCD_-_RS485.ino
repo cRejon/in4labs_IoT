@@ -42,9 +42,10 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 void setup() {
     Serial1.begin(9600, SERIAL_8N1, RX_PIN, TX_PIN);  // initialize serial port
-    delay(1000);          // wait for serial port to initialize
-    Serial1.flush();      // clear serial port buffer
-
+    while (!Serial1) {
+      ;                         // wait for serial port to initialize
+    }
+    
     lcd.begin(16, 2);           // set up the LCD's number of columns and rows
     lcd.clear();
 }
