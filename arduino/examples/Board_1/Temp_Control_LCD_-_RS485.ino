@@ -52,7 +52,7 @@ void setup() {
 
 void loop() {
     Serial1.write("temperature");       // send request to obtain temperature sensor reading
-    delay(100);                         // leave time for transmision to be received and replied generated
+    delay(300);                         // leave time for transmision to be received and replied generated
     // save temperature reading in temperatureReading char array
     int i = 0;                          // counter for number of bytes received
     while(Serial1.available()){         // slave may send less than requested
@@ -65,7 +65,7 @@ void loop() {
     }
 
     Serial1.write("humidity");          // send request to obtain humidity sensor reading
-    delay(100);                         // leave time for transmision to be received and replied generated
+    delay(300);                         // leave time for transmision to be received and replied generated
     // save humidity reading in humidityReading char array
     int j = 0;                          // counter for number of bytes received
     while(Serial1.available()){         // slave may send less than requested
