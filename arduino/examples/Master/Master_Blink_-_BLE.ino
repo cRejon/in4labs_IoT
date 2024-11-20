@@ -15,7 +15,9 @@
 
 void setup() {
   Serial.begin(9600);
-  while (!Serial);
+  // Uncomment this while statement to get debug info from beginning. The master will not 
+  // attempt to connect to the slave until the Serial Monitor button is pressed.
+  //while (!Serial);
 
   // initialize the BLE hardware
   BLE.begin();
