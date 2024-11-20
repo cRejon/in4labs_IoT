@@ -15,7 +15,6 @@
         - Fan (-) connected to Relay NC (Normally Closed) 
         - Relay COM (common) to ground
         - Pin 2 connected to Relay Signal pin
-        - Pin 2 is the default pin for ESP32 DevKit V1, but you can choose a different pin
 
     Review example 'Fan Test' for a detailed description of how this fan works.
 */
