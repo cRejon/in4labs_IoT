@@ -2,7 +2,7 @@ import os
 import subprocess
 import threading
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import atexit
 
 import docker
@@ -49,11 +49,11 @@ except docker.errors.ImageNotFound:
         print(log.get('stream', '').strip())
 
 # Docker environment variables
-end_time = datetime.now() + timedelta(minutes=lab_duration)
+end_time = datetime.now(timezone.utc) + timedelta(minutes=lab_duration)
 docker_env = {
     'USER_EMAIL': 'admin@email.com',
     'USER_ID': 1,
-    'END_TIME': end_time.strftime('%Y-%m-%dT%H:%M:%S'),
+    'END_TIME': end_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
     'CAM_URL': lab.get('cam_url', ''),
 }
 
