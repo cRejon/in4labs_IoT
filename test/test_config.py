@@ -7,7 +7,7 @@ class Config(object):
             'html_name' : 'Laboratory of Internet of Things',
             'description' : 'This lab performs IoT experiments on Arduino devices',
             'host_port' : 8001,
+            'nat_port' : 8001,
             'cam_url': 'http://ULR_TO_WEBCAM/Mjpeg',
-            'extra_containers': [],
         }],
     }
