@@ -6,9 +6,9 @@ RUN apt-get update && apt-get install -y curl uhubctl
 WORKDIR /usr/local
 RUN curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | ARDUINO_UPDATER_ENABLE_NOTIFICATION=false sh -s 0.34.2
 RUN arduino-cli core update-index
-RUN arduino-cli core install arduino:megaavr
+#RUN arduino-cli core install arduino:megaavr
 RUN arduino-cli core install arduino:esp32
-RUN arduino-cli lib install "WiFiNINA"
+#RUN arduino-cli lib install "WiFiNINA"
 RUN arduino-cli lib install "ArduinoBLE"
 RUN arduino-cli lib install "DHT sensor library"
 RUN arduino-cli lib install "LiquidCrystal"
