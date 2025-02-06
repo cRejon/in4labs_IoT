@@ -10,15 +10,15 @@ This lab uses three [Arduino Nano ESP32](https://docs.arduino.cc/hardware/nano-e
 # Boards configuration
 boards = {
     'Board_1':{
-        'name':'LCD',
-        'role':'Master',
+        'name':'Sensor',
+        'role':'Slave',
         'model':'Arduino Nano ESP32',
         'fqbn':'arduino:esp32:nano_nora',
         'usb_port':'1',
     },
     'Board_2':{
-        'name':'Sensor',
-        'role':'Slave',
+        'name':'LCD',
+        'role':'Master',
         'model':'Arduino Nano ESP32',
         'fqbn':'arduino:esp32:nano_nora',
         'usb_port':'2',
