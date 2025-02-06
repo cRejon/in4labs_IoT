@@ -18,7 +18,7 @@ class StopContainerTask(threading.Thread):
          self.end_time = end_time
  
      def run(self):
-        remaining_secs = (end_time - datetime.now()).total_seconds()
+        remaining_secs = (end_time - datetime.now(timezone.utc)).total_seconds()
         time.sleep(remaining_secs - 2) # Minus 2 seconds for safety
         self.container.stop()
         print('Container stopped.')
