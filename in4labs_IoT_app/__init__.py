@@ -99,8 +99,9 @@ def get_example():
     board_path = os.path.join(examples_path, board)
     commons_path = os.path.join(examples_path, 'Commons')
 
+    example_file = None
     for path in [board_path, commons_path]:
-        if example in os.listdir(path):
+        if os.path.isdir(path) and example in os.listdir(path):
             example_file = os.path.join(path, example)
             break
 
@@ -115,7 +116,7 @@ def compile():
     code = request.form['text']
 
     fqbn = boards[board]['fqbn']
-    
+
     compilation_path = os.path.join(app.instance_path, 'compilations', board)
     sketch_path = os.path.join(compilation_path, 'temp_sketch')
 
@@ -208,4 +209,3 @@ def reset():
     # Return the output of the command for debugging purposes
     resp = jsonify(result=result.stdout)
     return resp
-
