@@ -49,5 +49,5 @@ void loop() {
 }
 
 void requestEvent(){      // function run if request received from master
-  Wire.write(sensorChar); // respond with mesage of 11 bytes (Only 10 bytes with information)
+  Wire.write(sensorChar); // respond with mesage of 9 bytes (Only 8 bytes with information)
 }
