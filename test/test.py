@@ -19,12 +19,13 @@ class StopContainerTask(threading.Thread):
  
      def run(self):
         remaining_secs = (end_time - datetime.now(timezone.utc)).total_seconds()
-        time.sleep(remaining_secs - 2) # Minus 2 seconds for safety
+        time.sleep(remaining_secs) 
         self.container.stop()
         print('Container stopped.')
 
 
 # Import lab config from Config object
+server_name = Config.labs_config['server_name']
 lab_duration = Config.labs_config['duration']
 lab = Config.labs_config['labs'][0]
 lab_name = lab['lab_name']
@@ -51,6 +52,8 @@ except docker.errors.ImageNotFound:
 # Docker environment variables
 end_time = datetime.now(timezone.utc) + timedelta(minutes=lab_duration)
 docker_env = {
+    'SERVER_NAME': server_name,
+    'LAB_NAME': lab_name,
     'USER_EMAIL': 'admin@email.com',
     'USER_ID': 1,
     'END_TIME': end_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
@@ -80,6 +83,3 @@ def exit_handler():
     container.stop()
 
 atexit.register(exit_handler)
-
-
-
