@@ -19,8 +19,17 @@
     border-radius: 4px;
 }
 .camera {
-    width: 560px;
-    float: left;
+    width: 580px;
+    float: right;
+    color: white;
+    font-weight: 700;
+    background: #00979C;
+    border: 2px solid  #00979C;
+    border-radius: 0.375rem;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 .editor {
     width: calc(100% - 580px);
